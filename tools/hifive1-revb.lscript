@@ -1,0 +1,65 @@
+/****************************************************************************
+ *
+ *   Copyright (C) 2022 bsvtgc@gmail.com. All rights reserved.
+ *   Author: Vincent <bsvtgc@gmail.com>
+ *
+ ****************************************************************************/
+
+
+/* Comments here */
+
+OUTPUT_ARCH("riscv")
+
+/* Entry point */
+
+ENTRY(_start)
+
+/* Memory Layout */
+
+MEMORY
+{
+    ram(wxa!ri): ORIGIN = 0x80000000, LENGTH = 0x4000 
+}
+
+/* SECTIONS Commmand 
+SECTIONS { ...
+  secname : {  
+    contents
+  }
+... }
+In above, secname is the output section name, content is the 
+content that goes into the section. The output section 
+would be created only if there is any content. 
+
+SECTIONS
+{
+  . = 0x10000;
+  .text : { *(.text) }
+  . = 0x8000000;
+  .data : { *(.data) }
+  .bss : { *(.bss) }
+  _etext = .;
+}
+You write the `SECTIONS' command as the keyword `SECTIONS',
+followed by a series of symbol assignments and output section descriptions enclosed in curly braces.
+
+The symbol `_etext' will be defined as the address following the last `.bss' input section
+*/
+
+SECTIONS
+{
+    SECTION_CODE :
+    {
+        *(.code*)
+    }
+    > ram
+    . = ALIGN(4);
+
+    SECTION_DATA :
+    {
+        *(.data*)
+    }
+    > ram
+    . = ALIGN(4);
+}
+
