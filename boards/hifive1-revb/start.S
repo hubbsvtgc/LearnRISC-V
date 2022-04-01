@@ -38,11 +38,12 @@ Default clock set speed is 13.8 Mhz */
 .section .code
 
 .global _start
+.extern _stack_start
 
 _start:
 
-addi t0, x0, 3; 
-addi t1, x0, 5;
+lui sp, %hi(_stack_start);
+addi sp, sp, %lo(_stack_start);
 
 loop_forever:
 jal x0, loop_forever;

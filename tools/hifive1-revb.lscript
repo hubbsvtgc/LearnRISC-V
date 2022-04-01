@@ -61,5 +61,8 @@ SECTIONS
     }
     > ram
     . = ALIGN(4);
+
+    /* Set Stack after code & data */
+    _stack_start = .;
 }
 
