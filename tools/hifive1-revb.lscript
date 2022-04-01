@@ -48,14 +48,14 @@ The symbol `_etext' will be defined as the address following the last `.bss' inp
 
 SECTIONS
 {
-    SECTION_CODE :
+    .code :
     {
         *(.code*)
     }
     > ram
     . = ALIGN(4);
 
-    SECTION_DATA :
+    .data :
     {
         *(.data*)
     }

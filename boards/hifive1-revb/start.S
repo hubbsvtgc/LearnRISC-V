@@ -35,15 +35,25 @@ Run low level init and jump to QSPI location 0x20010000
 undergo controlled execution through gdb.
 Default clock set speed is 13.8 Mhz */
 
-.section .code
+.extern _stack_start; /* From linker script */
+.extern _trap_routine; /* From linker script */
 
-.global _start
-.extern _stack_start
+.global _start; /* To be visible to linker */
+
+.section .code
 
 _start:
 
-lui sp, %hi(_stack_start);
-addi sp, sp, %lo(_stack_start);
+    /* set stack pointer */
+
+    lui sp, %hi(_stack_start);
+    addi sp, sp, %lo(_stack_start);
+
+    /* set trap vector base with direct mode */
+
+    lui t0, %hi(_trap_routine);
+    addi t0, t0, %lo(_trap_routine);
+    csrw mtvec, t0;
 
 loop_forever:
 jal x0, loop_forever;
