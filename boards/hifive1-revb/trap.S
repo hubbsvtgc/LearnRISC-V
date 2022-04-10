@@ -11,4 +11,5 @@
 _trap_routine:
     nop;
     csrr t0, mcause;
-    mret;
+jal x0, _trap_routine; /* Just loop around untill we know to handle it */
+    //mret;
