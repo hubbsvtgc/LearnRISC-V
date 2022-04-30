@@ -8,7 +8,7 @@
 # *
 # ****************************************************************************/
 
-printf "This build script is work-in-progress\n"
+#printf "This build script is work-in-progress\n"
 
 if [ -z "$1" ]; then
     printf "Provide build option\n"
@@ -24,6 +24,7 @@ if [[ "cleanse" == "$1" ]]; then
 fi
 
 BOARD=$1
+APP=$2
 
 set_asembler ()
 {
@@ -44,24 +45,32 @@ set_linker ()
 set_compiler ()
 {
 # GNU Compiler
-    GNU_CC=riscv64-unknown-elf-cc
+   GNU_CC=riscv64-unknown-elf-cc
 #    GNU_CC_FLAGS=
 }
 
 build_executable ()
 {
-    printf "Build for BOARD=${BOARD}\n"
-    printf "Right now this just builds the basic *.S files \n"
+    printf "\n## Build settings BOARD=${BOARD}, APP=${APP} ##\n\n"
 
-    BOARD_DIR=../boards/hifive1-revb
-    SRC_FILES=$(ls ${BOARD_DIR})
+    BOARD_DIR=../boards/${BOARD}
+    BOARD_SRC_DIR=${BOARD_DIR}/asm-src
+    BOARD_FILES=$(ls ${BOARD_SRC_DIR})
+
+    APP_DIR=../apps/${APP}
+    APP_FILES=$(ls ${APP_DIR})
 
 # Executable 
     EXECUTABLE=FINAL_LOAD.elf
 
-    for file in ${SRC_FILES[@]}; do
+    for file in ${BOARD_FILES[@]}; do
         file_trimmed=$( echo "$file" | cut -f 1 -d '.')
-        $GNU_AS  ${GNU_AS_FLAGS} ${BOARD_DIR}/${file} -o ${file_trimmed}.o
+        $GNU_AS  ${GNU_AS_FLAGS} ${BOARD_SRC_DIR}/${file} -o ${file_trimmed}.o
+    done
+
+     for file in ${APP_FILES[@]}; do
+        file_trimmed=$( echo "$file" | cut -f 1 -d '.')
+        $GNU_AS  ${GNU_AS_FLAGS} ${APP_DIR}/${file} -o ${file_trimmed}.o
     done
 
     OBJ_FILES=$( ls *.o )

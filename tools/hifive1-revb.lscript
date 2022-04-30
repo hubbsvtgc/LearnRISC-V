@@ -12,7 +12,7 @@ OUTPUT_ARCH("riscv")
 
 /* Entry point */
 
-ENTRY(_start)
+ENTRY(FN_entry)
 
 /* Memory Layout */
 
@@ -48,9 +48,9 @@ The symbol `_etext' will be defined as the address following the last `.bss' inp
 
 SECTIONS
 {
-    .code :
+    .text :  /* GAS dont accept .code section */
     {
-        *(.code*)
+        *(.text*)
     }
     > ram
     . = ALIGN(4);
@@ -63,6 +63,6 @@ SECTIONS
     . = ALIGN(4);
 
     /* Set Stack after code & data */
-    _stack_start = .;
+    VAR_stack_start = .;
 }
 

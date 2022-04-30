@@ -6,6 +6,8 @@
  ****************************************************************************/
 
 /*
+https://forums.sifive.com/t/how-to-modify-msel-pin-state/5542
+
 Normal Boot Sequence in board if NOT interrupted.
 
 Reset Vector ROM
@@ -29,33 +31,31 @@ memory mapped Mask ROM (jumps to memory mapped OTP)
 0x20000:
 memory mapped OTP
 Run low level init and jump to QSPI location 0x20010000
-*/
 
-/* Right now, this is code is a way to be loaded into RAM and
-undergo controlled execution through gdb.
-Default clock set speed is 13.8 Mhz */
+Right now, this is code in a way to be loaded into RAM and
+undergo controlled execution through gdb. */
 
-.extern _stack_start; /* From linker script */
-.extern _trap_routine; /* From linker script */
+.extern VAR_stack_start; /* From linker script */
+.extern FN_trap_routine; 
 
-.global _start; /* To be visible to linker */
+.global FN_entry; /* To be visible to linker */
 
-.section .code
+.section .text
 
-_start:
+FN_entry:
 
     /* set stack pointer */
 
-    lui sp, %hi(_stack_start);
-    addi sp, sp, %lo(_stack_start);
+    lui sp, %hi(VAR_stack_start);
+    addi sp, sp, %lo(VAR_stack_start);
 
     /* set trap vector base with direct mode */
 
-    lui t0, %hi(_trap_routine);
-    addi t0, t0, %lo(_trap_routine);
+    lui t0, %hi(FN_trap_routine);
+    addi t0, t0, %lo(FN_trap_routine);
     csrw mtvec, t0;
 
-loop_forever:
-jal x0, loop_forever;
+    call FN_app_entry; /* This is the entry point for app */
 
-
+LB_entry_end:
+j LB_entry_end;
