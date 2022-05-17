@@ -10,6 +10,9 @@
 /* Enable source id in PLIC */
 .global FN_plic_enable_src_id;
 
+/* Function to set priority for source interrupt */
+.global FN_plic_set_priority;
+
 /**********************************************************
 PLIC MMAP OFFSETS AS PER SPEC
 ***********************************************************/
@@ -19,7 +22,32 @@ PLIC MMAP OFFSETS AS PER SPEC
 .equiv PLIC_ENABLE_OFFSET, 0x2000
 .equiv PLIC_THRESHOLD_OFFSET, 0x200000
 
-.equiv PLIC_MMAP_BASE, 0x0C000000
+.equiv PLIC_MMAP_BASE, 0x0C000000 /* Implementation specific */
+
+/* Function to set priority for interrupt
+ * source in a0 register,
+ * prority in a1 register */
+
+FN_plic_set_priority:
+
+    /* Interrupt priority levels 7
+    * Bits 2:0
+    * 0 - never interrupt/disables interrupt
+    * 1 - lowest active priority
+    * 7 - highest priority
+    * Tie between sources of same priority - resolved
+    * by Interrupt ID. lowest ID highest effective priority */
+
+    /* Write a1 into (MMAP_BASE + 4*src id + PRIORITY OFFSET ) */
+
+    li t0, PLIC_MMAP_BASE;
+    slli a0, a0, 2;
+    add t0, a0, t0;
+    sw a1, PLIC_PRORITY_OFFSET(t0);
+
+ ret;
+
+
 
 /********************************************
  * PLIC in FE310-G002 supports 52 interrupt sources 
@@ -80,12 +108,6 @@ LB_plic_srcid_lt31:
     sw t2, 0(t0);
 ret;
 
-/* Interrupt priority levels 7
- * Bits 2:0 
- * 0 - never interrupt/disables interrupt
- * 1 - lowest active priority
- * 7 - highest priority
- * Tie between sources of same priority - resolved
- * by Interrupt ID. lowest ID highest effective priority */
+
 
 
