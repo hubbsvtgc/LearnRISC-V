@@ -9,7 +9,7 @@
 1. Instructions to build
 
 ## Directory Structure  
-![alt text](https://github.com/hubbsvtgc/LearnRISC-V/blob/gpio/DirectoryStruct.png?raw=true)
+![alt text](https://github.com/hubbsvtgc/LearnRISC-V/blob/trunk/DirectoryStruct.png?raw=true)
 
 
 ## Instructions to build  
