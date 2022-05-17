@@ -10,6 +10,17 @@
 /* Enable source id in PLIC */
 .global FN_plic_enable_src_id;
 
+/**********************************************************
+PLIC MMAP OFFSETS AS PER SPEC
+***********************************************************/
+
+.equiv PLIC_PRORITY_OFFSET, 0x0
+.equiv PLIC_PENDING_OFFSET, 0x1000
+.equiv PLIC_ENABLE_OFFSET, 0x2000
+.equiv PLIC_THRESHOLD_OFFSET, 0x200000
+
+.equiv PLIC_MMAP_BASE, 0x0C000000
+
 /********************************************
  * PLIC in FE310-G002 supports 52 interrupt sources 
  * with 7 priority levels 
