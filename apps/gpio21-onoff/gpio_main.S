@@ -11,36 +11,35 @@
 .section .text
 .global FN_app_entry;
 
-.equiv GPIO21_INTRSRC_ID, 29 /* Bit pos 28 */
+.equiv GPIO21_BIT_POSITION, 0x00200000
+.equiv GPIO21_INTERRUPT_SRC, 29
 
- /* Configure GPIOs
- * 31                 16 
- * 0000 0000 0010 0000
- * 15                 0
- * 0000 0000 0000 0000 as output */
-.equiv GPIO21_BPOS, 0x00200000
 
  FN_app_entry:
-
-/* Enable machine external interrupt */
+/* Enable external interrupt */
 call FN_intr_enable_mexternal; 
 
-/* Enable PLIC for interrupt 
- * source id 27 - GPIO 19 
- * source id 29 - GPIO 21
- * source id 30 - GPIO 30
- */
+/* Set priority 3 to gpio interrupt source 29 */
+li a0, GPIO21_INTERRUPT_SRC;
+li a1, 3;
+call FN_plic_set_priority;
 
-li a0, GPIO21_INTRSRC_ID;
+/* set source enable bits in PLIC */
+li a0, GPIO21_INTERRUPT_SRC;
 call FN_plic_enable_src;
 
-li a0, GPIO21_BPOS; 
+/* Configure pin 29 as both input (to sense) & output */
+li a0, GPIO21_BIT_POSITION;
+call FN_gpio_configure_as_input;
+
+li a0, GPIO21_BIT_POSITION;
 call FN_gpio_configure_as_output;
+
 
 control_gpio21:
 
 /* set 1 */
-li a0, GPIO21_BPOS;
+li a0, GPIO21_BIT_POSITION;
 call FN_gpio_write_value;
 
 /* set 0 */
