@@ -7,11 +7,10 @@
  ****************************************************************************/
 .section .text
 
-/* Function to set priority for source interrupt */
+/* Make functions visible outside */
 .global FN_plic_set_priority;
-
-/* Enable source id in PLIC */
 .global FN_plic_enable_src;
+.global FN_plic_set_threshold;
 
 /**********************************************************
 PLIC MMAP OFFSETS AS PER SPEC
