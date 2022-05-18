@@ -9,6 +9,7 @@
 
 .section .text
 
+.p2align 2
 /* Trap vector base address should be aligned on 4-byte boundary */
 FN_trap_routine:
     nop;
