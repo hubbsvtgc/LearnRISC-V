@@ -32,7 +32,7 @@ call FN_intr_enable_mexternal;
  */
 
 li a0, GPIO21_INTRSRC_ID;
-call FN_plic_enable_src_id;
+call FN_plic_enable_src;
 
 li a0, GPIO21_BPOS; 
 call FN_gpio_configure_as_output;
