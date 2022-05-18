@@ -7,24 +7,35 @@
  ****************************************************************************/
 .section .text
 
-.equiv MIE_MEIE, 0x00000800 /* Bit 11 */
+.equiv CSR_MIE_MEIE, 0x800 /* Bit 11 */
+.equiv CSR_MSTATUS_MIE, 0x8 /* Bit 3 */
 
 .global FN_intr_enable_mexternal;
 
+/* Funtion to enable machine interrupt and
+ * machine external interrupt */
+
  FN_intr_enable_mexternal:
 
-   /* Read MIE and set bit 11 to enable external
+   /* Read MIE csr and set bit 11 to enable external
     * interrupt */
 
     csrr t0, mie;
-/*
-    li t1, 1;
-    slli t1, t1, 11; 
+
+    li t1, CSR_MIE_MEIE;
     or t0, t0, t1;
-*/
-    li t1, MIE_MEIE;
-    or t0, t0, t1;
-    
+
     csrw mie, t0;
+
+    /* Read MSTATUS csr and set bit 3
+    to enable machine interrupt */
+
+    csrr t0, mstatus;
+
+    li t1, CSR_MSTATUS_MIE;
+    or t0, t0, t1;
+
+    csrw mstatus, t0;
+
  ret;
 
