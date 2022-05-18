@@ -24,6 +24,9 @@ li a0, GPIO21_INTERRUPT_SRC;
 li a1, 3;
 call FN_plic_set_priority;
 
+li a1, 2;
+call FN_plic_set_threshold;
+
 /* set source enable bits in PLIC */
 li a0, GPIO21_INTERRUPT_SRC;
 call FN_plic_enable_src;
@@ -35,6 +38,8 @@ call FN_gpio_configure_as_input;
 li a0, GPIO21_BIT_POSITION;
 call FN_gpio_configure_as_output;
 
+li a0, GPIO21_BIT_POSITION;
+call FN_gpio_enable_rise_intr;
 
 control_gpio21:
 
