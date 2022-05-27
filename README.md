@@ -16,7 +16,11 @@
 
 Make sure you have installed the GNU toolchain and OpenOCD from https://www.sifive.com/software. Export the paths so that its visible to the bash script in build directory. Set execution permission to build.sh with `chmod +x` command. 
 
-Issue the command `./build.sh <board> ` to build. For hifive1-revb board, `./build.sh hifive1-revb` and `./build.sh cleanse` to clean. 
+Issue the command `./build.sh <board> <app>` to build for a particular `board` and `app`. <br > 
+
+<br >For hifive1-revb board, <br > 
+`./build.sh hifive1-revb gpio21-onoff` builds the app `gpio21-onoff` for `hifive1-revb` and 
+<br >`./build.sh cleanse` to clean. 
 
 ## Naming
 ## General Prefixes
