@@ -42,6 +42,8 @@ undergo controlled execution through gdb. */
 
 .section .text
 
+.p2align 2
+
 FN_entry:
 
     /* set stack pointer */

@@ -44,6 +44,8 @@
 .equiv GPIO_IOF_SEL_OFF, 0x3C
 .equiv GPIO_OUT_XOR_OFF, 0x40
 
+.p2align 2
+
 /* --------------------------------------------
    Utility functions to configure and use GPIOs.
    All functions expect the argument in A0 register. 

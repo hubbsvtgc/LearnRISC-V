@@ -23,6 +23,8 @@ PLIC MMAP OFFSETS AS PER SPEC
 
 .equiv PLIC_MMAP_BASE, 0x0C000000 /* Implementation specific */
 
+.p2align 2
+
 /******************************
  * FUNCTION to set priority for interrupt sources
  * source in a0 register,

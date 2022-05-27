@@ -12,6 +12,8 @@
 
 .global FN_intr_enable_mexternal;
 
+.p2align 2
+
 /* Funtion to enable machine interrupt and
  * machine external interrupt */
 
