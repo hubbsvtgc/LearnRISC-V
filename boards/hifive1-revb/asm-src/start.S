@@ -59,5 +59,6 @@ FN_entry:
 
     call FN_app_entry; /* This is the entry point for app */
 
+.p2align 2
 LB_entry_end:
 j LB_entry_end;

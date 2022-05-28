@@ -23,14 +23,12 @@ PLIC MMAP OFFSETS AS PER SPEC
 
 .equiv PLIC_MMAP_BASE, 0x0C000000 /* Implementation specific */
 
-.p2align 2
-
 /******************************
  * FUNCTION to set priority for interrupt sources
  * source in a0 register,
  * prority in a1 register 
  *****************************/
-
+.p2align 2
 FN_plic_set_priority:
 
     /* Interrupt priority levels 7
@@ -54,6 +52,7 @@ FN_plic_set_priority:
 * FUNCTION to enable a source interrupt in PLIC CORE.
 * Argument: Register a0 with interrupt src id
 ********************************************/
+.p2align 2
 FN_plic_enable_src:
 
     /* Interrupt sources
@@ -90,6 +89,10 @@ FN_plic_enable_src:
 
     li t2, PLIC_MMAP_BASE;
 
+    add t1, t1, t2;
+
+    li t2, PLIC_ENABLE_OFFSET;
+
     add t1, t1, t2; /* t1 -> enable register addr */
 
     slli t2, t0, 5;
@@ -108,6 +111,7 @@ ret;
 * Argument: Register a0 with target/context,
 * Register a1 with threshold value
 ********************************************/
+.p2align 2
 FN_plic_set_threshold:
 
     /* FE310 has only one, HART 0 M-Mode context */

@@ -17,6 +17,7 @@
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_enable_high_intr;
+.global FN_gpio_clear_rise_pend;
 
  /* In FE310 G002, GPIO is a peripheral device mapped into internal memory map. 
  Each memory mapped register is 32 bits wide, each bit corresponding to each 
@@ -52,6 +53,7 @@
 ----------------------------------------------- */
 
 /* Configure gpio as input pin */
+.p2align 2
 FN_gpio_configure_as_input:
     /* Register A0 has the pins to be configured as input */
     li t0, GPIO_BASE;
@@ -61,6 +63,7 @@ FN_gpio_configure_as_input:
 ret;
 
 /* Configure gpio as output pin */
+.p2align 2
 FN_gpio_configure_as_output:
     /* Register A0 has the pins to be configured as output */
     li t0, GPIO_BASE ;
@@ -70,6 +73,7 @@ FN_gpio_configure_as_output:
 ret;
 
 /* Configure gpio pins as io functionality */
+.p2align 2
 FN_gpio_configure_as_iof:
     /* Register A0 has the pins to be configured as io functionality */
     li t0, GPIO_BASE ;
@@ -80,6 +84,7 @@ ret;
 
 /* Write value to gpio pins - 0 bit value to gpio 0, Correspondingly 
    Ensure write is performed on pins configured as OUT */
+.p2align 2
 FN_gpio_write_value:
     /* Register A0 has the values for all gpios to output 
      * THis dont need a read, or & write, 
@@ -90,6 +95,7 @@ ret;
 
 /* Read value from gpio pins - 0 bit value to gpio 0, Correspondingly 
    Ensure read is performed on pins configured as IN */
+.p2align 2
 FN_gpio_read_value:
 
     li t0, GPIO_BASE ;
@@ -99,6 +105,7 @@ FN_gpio_read_value:
 ret;
 
 /* Enable rise interrupt for gpios */
+.p2align 2
 FN_gpio_enable_rise_intr:
     li t0, GPIO_BASE;
     lw t1, GPIO_RISE_INTR_EN_OFF(t0);
@@ -107,6 +114,7 @@ FN_gpio_enable_rise_intr:
 ret;
 
 /* Enable high interrupt for gpios */
+.p2align 2
 FN_gpio_enable_high_intr:
     li t0, GPIO_BASE ;
     lw t1, GPIO_HI_INTR_EN_OFF(t0);
@@ -114,3 +122,11 @@ FN_gpio_enable_high_intr:
     sw t1, GPIO_HI_INTR_EN_OFF(t0);
 ret;
 
+/* Clear rise pending  bit for gpios */
+.p2align 2
+FN_gpio_clear_rise_pend:
+    li t0, GPIO_BASE;
+    lw t1, GPIO_RISE_INTR_PEND_OFF(t0);
+    or t1, t1, a0;
+    sw t1, GPIO_RISE_INTR_PEND_OFF(t0);
+ret;

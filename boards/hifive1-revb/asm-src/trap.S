@@ -12,6 +12,10 @@
 .equiv INTERRUPT_MASK, 0x80000000
 .equiv EXCEPTION_CODE_MASK, 0x7FFFFFFF
 .equiv EXT_INTR_BIT, 0x8
+.equiv MACHINE_SI_MASK, 0x3
+.equiv MACHINE_TI_MASK, 0x7
+.equiv MACHINE_EI_MASK, 0xb
+.equiv INTR_CLAIM_COMP_REG_ADDR, 0x0C200004
 
 .p2align 2
 
@@ -22,60 +26,16 @@ FN_trap_routine:
     nop;
     csrr t0, mcause;
 
-    li t1, EXCEPTION_CODE_MASK;
-    and a0, t0, t1; /* Extract the exception code */
+    /* HACK: only for gpio21 interrupt */
+    li a0, 0x00200000;
+    call FN_gpio_clear_rise_pend; 
 
-    srli t1, t0, 31;
-    beqz t1, LB_TRAP_exception;
+    li t1, INTR_CLAIM_COMP_REG_ADDR;
+    lw t2, 0(t1);
 
-        call FN_trap_interrupt;
-        j LB_trap_routine_end;
+    sw t2, 0(t1);
 
-    LB_trap_exception:
-
-        call FN_trap_excetption;
-
-LB_trap_routine_end:
-ret;
-
-/* Function to set trap mode, direct or vectored */
-
-FN_trap_set_mode:
-
-    /* A0 reg's LSbit has the mode
-     * 0 - Direct
-     * 1 - Vectored */
-
-    andi a0, a0, 1;
-    slt t0, zero, a0;
-
-    csrr t1, mtvec;
-    or t1, t1, t0;
-    csrw mtvec, t1;
-ret;
-
-/* Handle Interrupt exception codes.
- * a0 has the exception code */
-
-FN_trap_interrupt:
+mret; /* NOTE: it should be MRET */
 
 
-        /* Interrupt Exception code
-        * 0 - 3  Software Interrupt
-        * 4 - 7  Timer interrupt
-        * 8 - 11 External interrupt */
 
-    srli t1, t0, 2;
-    seqz t1, t1; /* software interrupt */
-
-    slti t1, t0, 8;
-
-ret;
-
-/* Handle exception, exception codes.
- * a0 has the exception code */
-
-FN_trap_exception:
-
-
-ret;
