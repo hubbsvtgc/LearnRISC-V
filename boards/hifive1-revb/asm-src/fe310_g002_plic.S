@@ -12,14 +12,7 @@
 .global FN_plic_enable_src;
 .global FN_plic_set_threshold;
 
-/**********************************************************
-PLIC MMAP OFFSETS AS PER SPEC
-***********************************************************/
-
-.equiv PLIC_PRORITY_OFFSET, 0x0
-.equiv PLIC_PENDING_OFFSET, 0x1000
-.equiv PLIC_ENABLE_OFFSET, 0x2000
-.equiv PLIC_THRESHOLD_OFFSET, 0x200000
+.include "RV_PLIC.S" /** From RISC-V Spec */
 
 .equiv PLIC_MMAP_BASE, 0x0C000000 /* Implementation specific */
 
