@@ -54,14 +54,14 @@ ret;
 
 /* Function to set the number of stop bits in UART 1 */
 FN_uart1_set_stopbits:
-    /* Args- a0 - Number of stop bits
-     0 - 1 stop bit, 1 -  2 stop bits */
+    /* Args- a0 - Number of stop bits 
+    bit[1]: 0 - 1 stop bit, 1 - 2 stop bits */
 
     slli a0, a0, 1;
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
-.equiv UART_MASK_STOPBITS, 0xFFFFFFFD /* [1] bit zero mask */
+.equiv UART_MASK_STOPBITS, 0xFFFFFFFD /* bit[1] mask */
 
     li t2, UART_MASK_STOPBITS;
     add t1, t1, t2;
@@ -69,15 +69,10 @@ FN_uart1_set_stopbits:
     sw t1, UART_TXCTRL_OFFSET(t0); /* Set wmark */
 ret;
 
-/* Function to send a byte through UART 1 */
-FN_uart1_send_byte:
-    /* Elementary function to send a byte
-     Input: a0 with input byte in [7:0] bits */
-
-ret:
-
 /* Function to enable UART 1 */
 FN_uart1_enable:
+
+    /* bit[0]: 0 - disable, 1 - enable */
 
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
@@ -90,6 +85,8 @@ ret;
 /* Function to disable UART 1 */
 FN_uart1_disable:
 
+    /* bit[0]: 0 - disable, 1 - enable */
+
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
@@ -97,3 +94,13 @@ FN_uart1_disable:
     sw t1, UART_TXCTRL_OFFSET(t0); /* Disable */
 
 ret;
+
+/* Function to send a byte through UART 1 */
+FN_uart1_send_byte:
+    /* Elementary function to send a byte
+     Input: a0 with input byte in [7:0] bits */
+
+      li t0, UART1_BASE;
+      sw a0, UART_TXDATA_OFFSET(t0); /* Disable */
+
+ret:

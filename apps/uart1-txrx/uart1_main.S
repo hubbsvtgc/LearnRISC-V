@@ -62,4 +62,30 @@ FN_app_entry:
     li a0, UART1_INTERRUPT_SRC;
     call FN_plic_enable_src;
 
+    /* set UART 1 to baud 115200 */
+    call FN_uart1_set_115200;
+
+    /* set UART 1 tx water mark to 3 */
+    li a0, 3;
+    call FN_uart1_set_txwmark;
+
+    /* set 2 stop bits */
+    li a0, 1;
+    call FN_uart1_set_stopbits;
+
+    /* send byte 0xaa */
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+
+    /* send byte 0xaa */
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+
+    /* send byte 0xaa */
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+
+    /* Enable UART 1 */
+    call FN_uart1_enable;
+
     
