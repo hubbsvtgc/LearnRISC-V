@@ -13,8 +13,7 @@
 .global FN_plic_set_threshold;
 
 .include "RV_PLIC.S" /** From RISC-V Spec */
-
-.equiv PLIC_MMAP_BASE, 0x0C000000 /* Implementation specific */
+.include "fe310_g002_mmap_h.S" /* FE310 Mmap */
 
 /******************************
  * FUNCTION to set priority for interrupt sources
@@ -34,7 +33,7 @@ FN_plic_set_priority:
 
     /* Write a1 into (MMAP_BASE + 4*src id + PRIORITY OFFSET ) */
 
-    li t0, PLIC_MMAP_BASE;
+    li t0, FE310_PLICMMAP_BASE;
     slli a0, a0, 2;
     add t0, a0, t0;
     sw a1, PLIC_PRORITY_OFFSET(t0);
@@ -80,7 +79,7 @@ FN_plic_enable_src:
 
     slli t1, t0, 2;
 
-    li t2, PLIC_MMAP_BASE;
+    li t2, FE310_PLICMMAP_BASE;
 
     add t1, t1, t2;
 
@@ -109,7 +108,7 @@ FN_plic_set_threshold:
 
     /* FE310 has only one, HART 0 M-Mode context */
 
-    li t0, PLIC_MMAP_BASE;
+    li t0, FE310_PLICMMAP_BASE;
     li t1, PLIC_THRESHOLD_OFFSET;
     add t1, t1, t0;
 

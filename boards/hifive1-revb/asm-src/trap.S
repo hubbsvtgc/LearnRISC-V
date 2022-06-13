@@ -15,7 +15,9 @@
 .equiv MACHINE_SI_MASK, 0x3
 .equiv MACHINE_TI_MASK, 0x7
 .equiv MACHINE_EI_MASK, 0xb
-.equiv INTR_CLAIM_COMP_REG_ADDR, 0x0C200004
+
+.include "fe310_g002_mmap_h.S"  /** FE310 Mmap */
+.include "RV_PLIC.S" /** From RISC-V Spec */
 
 .p2align 2
 
@@ -30,7 +32,11 @@ FN_trap_routine:
     li a0, 0x00200000;
     call FN_gpio_clear_rise_pend; 
 
-    li t1, INTR_CLAIM_COMP_REG_ADDR;
+    li t1, FE310_PLICMMAP_BASE;
+    li t2, PLIC_CLAIMCOMP_CTX1_OFFSET;
+
+    add t1, t2, t1;
+
     lw t2, 0(t1);
 
     sw t2, 0(t1);
