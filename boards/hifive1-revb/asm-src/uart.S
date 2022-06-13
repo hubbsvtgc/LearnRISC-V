@@ -38,18 +38,16 @@ ret;
 
 /* Function to set tx water mark in UART 1 */
 FN_uart1_set_txwmark:
+
     /* Args- a0 - Transmit water mark level value 0-7*/
 
-    slli a0, a0, 15;
     li t0, UART1_BASE;
-    lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
+    lhu t1, UART_TXCTRL_OFFSET+2(t0); /* Read present value */
 
-.equiv UART_MASK_WMARK, 0xFFF8FFFF /* [18:16] zero mask */
-
-    li t2, UART_MASK_WMARK;
-    add t1, t1, t2;
+    andi t1, t1, -8;
     or t1, t1, a0;
-    sw t1, UART_TXCTRL_OFFSET(t0); /* Set wmark */
+    sh t1, UART_TXCTRL_OFFSET+2(t0); /* Set wmark */
+
 ret;
 
 /* Function to set the number of stop bits in UART 1 */
@@ -57,16 +55,13 @@ FN_uart1_set_stopbits:
     /* Args- a0 - Number of stop bits 
     bit[1]: 0 - 1 stop bit, 1 - 2 stop bits */
 
-    slli a0, a0, 1;
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
-.equiv UART_MASK_STOPBITS, 0xFFFFFFFD /* bit[1] mask */
-
-    li t2, UART_MASK_STOPBITS;
-    add t1, t1, t2;
+    andi t1, t1, -2;
     or t1, t1, a0;
-    sw t1, UART_TXCTRL_OFFSET(t0); /* Set wmark */
+    sw t1, UART_TXCTRL_OFFSET(t0); /* Set stop bits */
+
 ret;
 
 /* Function to enable UART 1 */

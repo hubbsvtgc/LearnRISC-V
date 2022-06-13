@@ -34,7 +34,6 @@ FN_trap_routine:
 
     li t1, FE310_PLICMMAP_BASE;
     li t2, PLIC_CLAIMCOMP_CTX1_OFFSET;
-
     add t1, t2, t1;
 
     lw t2, 0(t1);
