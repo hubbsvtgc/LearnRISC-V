@@ -28,17 +28,30 @@ FN_trap_routine:
     nop;
     csrr t0, mcause;
 
-    /* HACK: only for gpio21 interrupt */
+    li t0, FE310_PLICMMAP_BASE;
+    li t1, PLIC_CLAIMCOMP_CTX1_OFFSET;
+    add t0, t1, t0; /* t0 has the claim/comp reg addr */
+
+    lw t1, 0(t0);
+    addi t1, t1, 63; /* Interrupt source in t1 */
+
+    li t2, 4;
+    beq t2, t1, LB_uart1_intr;
+
+    /* HACK: if not uart1, for gpio21 interrupt */
+    j LB_gpio21_intr;
+
+LB_uart1_intr: /* Uart1 interrupt */
+
+    j LB_trap_routine_end;
+
+LB_gpio21_intr: /* Gpio21 interrupt */
+
     li a0, 0x00200000;
-    call FN_gpio_clear_rise_pend; 
+    call FN_gpio_clear_rise_pend;
 
-    li t1, FE310_PLICMMAP_BASE;
-    li t2, PLIC_CLAIMCOMP_CTX1_OFFSET;
-    add t1, t2, t1;
-
-    lw t2, 0(t1);
-
-    sw t2, 0(t1);
+LB_trap_routine_end:
+    sw t2, 0(t0); /* Write with any value means completion */
 
 mret; /* NOTE: it should be MRET */
 

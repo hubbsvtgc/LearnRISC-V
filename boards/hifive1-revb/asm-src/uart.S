@@ -96,6 +96,6 @@ FN_uart1_send_byte:
      Input: a0 with input byte in [7:0] bits */
 
       li t0, UART1_BASE;
-      sw a0, UART_TXDATA_OFFSET(t0); /* Disable */
+      sw a0, UART_TXDATA_OFFSET(t0);
 
-ret:
+ret;
