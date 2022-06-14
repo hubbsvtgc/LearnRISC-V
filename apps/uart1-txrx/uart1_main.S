@@ -88,4 +88,11 @@ FN_app_entry:
     /* Enable UART 1 */
     call FN_uart1_enable;
 
+    LB_loop_tx_start:
+
+        li a0, 0xaa;
+        call FN_uart1_send_byte;
+
+    LB_loop_tx_end:
+
     
