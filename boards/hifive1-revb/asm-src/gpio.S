@@ -18,6 +18,7 @@
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_clear_rise_pend;
+.global FN_gpio_select_iof;
 
  /* In FE310 G002, GPIO is a peripheral device mapped into internal memory map. 
  Each memory mapped register is 32 bits wide, each bit corresponding to each 
@@ -80,6 +81,16 @@ FN_gpio_configure_as_iof:
     lw t1, GPIO_IOF_EN_OFF(t0);
     or t1, t1, a0;
     sw t1, GPIO_IOF_EN_OFF(t0);
+ret;
+
+/* Select gpio IoF */
+.p2align 2
+FN_gpio_select_iof:
+    /* Register A0 has the pins to select as io functionality */
+    li t0, GPIO_BASE ;
+    lw t1, GPIO_IOF_SEL_OFF(t0);
+    or t1, t1, a0;
+    sw t1, GPIO_IOF_SEL_OFF(t0);
 ret;
 
 /* Write value to gpio pins - 0 bit value to gpio 0, Correspondingly 

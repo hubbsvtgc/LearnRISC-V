@@ -32,7 +32,7 @@ FN_trap_routine:
     add t0, t1, t0; /* t0 has the claim/comp reg addr */
 
     lw t1, 0(t0);
-    addi t1, t1, 63; /* Interrupt source in t1 */
+    andi t1, t1, 63; /* Interrupt source in t1 */
 
     li t2, 4;
     beq t2, t1, LB_uart1_intr;

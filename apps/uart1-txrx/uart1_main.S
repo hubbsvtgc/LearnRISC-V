@@ -44,8 +44,8 @@ FN_app_entry:
     li a0, GPIO18_UART1_TX;
     call FN_gpio_configure_as_iof;
 
-    li a0, GPIO23_UART1_RX;
-    call FN_gpio_configure_as_iof;
+    li a0, GPIO18_UART1_TX;
+    call FN_gpio_select_iof;
 
     /* Set priority 3 to uart1 interrupt source 4 */
     li a0, UART1_INTERRUPT_SRC;
@@ -73,18 +73,21 @@ FN_app_entry:
     li a0, 1;
     call FN_uart1_set_stopbits;
 
-    /* send byte 0xaa */
-    li a0, 0xaa;
-    call FN_uart1_send_byte;
+    /* Enable uart 1 tx water mark interrupt*/
+    li a0, 1;
+    call FN_uart1_enable_txwm_intr;
 
     /* send byte 0xaa */
     li a0, 0xaa;
     call FN_uart1_send_byte;
 
-    /* send byte 0xaa */
+/* send byte 0xaa 
     li a0, 0xaa;
     call FN_uart1_send_byte;
 
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+*/
     /* Enable UART 1 */
     call FN_uart1_enable;
 
@@ -97,5 +100,3 @@ FN_app_entry:
 
 .p2align 2
     LB_loop_tx_end:
-
-    

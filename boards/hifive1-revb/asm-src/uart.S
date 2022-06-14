@@ -24,6 +24,7 @@
 .global FN_uart1_send_byte;
 .global FN_uart1_enable;
 .global FN_uart1_disable;
+.global FN_uart1_enable_txwm_intr;
 
 /* Function to set UART 1 baud rate to 115200 */
 .p2align 2
@@ -32,7 +33,7 @@ FN_uart1_set_115200:
     divisor should be 512*/
 
     li t0, UART1_BASE;
-    li t1, 512;
+    li t1, 138;
 
     sw t1, UART_BAUD_DIV_OFFSET(t0);
 ret;
@@ -103,5 +104,19 @@ FN_uart1_send_byte:
 
       li t0, UART1_BASE;
       sw a0, UART_TXDATA_OFFSET(t0);
+
+ret;
+
+/* Function to enable UART 1 interrupt */
+.p2align 2
+FN_uart1_enable_txwm_intr:
+
+    /* bit[0]: 0 - disable txwm, 1 - enable txwm interrupt */
+
+    li t0, UART1_BASE;
+    lw t1, UART_INTR_EN_OFFSET(t0); /* Read present value */
+
+    ori t1, t1, 1;
+    sw t1, UART_INTR_EN_OFFSET(t0); /* Enable */
 
 ret;
