@@ -26,6 +26,7 @@
 .global FN_uart1_disable;
 
 /* Function to set UART 1 baud rate to 115200 */
+.p2align 2
 FN_uart1_set_115200:
     /* With tlclk at 16Mhz, to achieve 115200 baud,
     divisor should be 512*/
@@ -37,6 +38,7 @@ FN_uart1_set_115200:
 ret;
 
 /* Function to set tx water mark in UART 1 */
+.p2align 2
 FN_uart1_set_txwmark:
 
     /* Args- a0 - Transmit water mark level value 0-7*/
@@ -51,6 +53,7 @@ FN_uart1_set_txwmark:
 ret;
 
 /* Function to set the number of stop bits in UART 1 */
+.p2align 2
 FN_uart1_set_stopbits:
     /* Args- a0 - Number of stop bits 
     bit[1]: 0 - 1 stop bit, 1 - 2 stop bits */
@@ -65,6 +68,7 @@ FN_uart1_set_stopbits:
 ret;
 
 /* Function to enable UART 1 */
+.p2align 2
 FN_uart1_enable:
 
     /* bit[0]: 0 - disable, 1 - enable */
@@ -78,6 +82,7 @@ FN_uart1_enable:
 ret;
 
 /* Function to disable UART 1 */
+.p2align 2
 FN_uart1_disable:
 
     /* bit[0]: 0 - disable, 1 - enable */
@@ -91,6 +96,7 @@ FN_uart1_disable:
 ret;
 
 /* Function to send a byte through UART 1 */
+.p2align 2
 FN_uart1_send_byte:
     /* Elementary function to send a byte
      Input: a0 with input byte in [7:0] bits */

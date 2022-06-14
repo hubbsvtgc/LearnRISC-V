@@ -23,7 +23,6 @@
 
 /* Trap vector base address should be aligned on 4-byte boundary 
  * this dont take any argument */
-
 FN_trap_routine:
     nop;
     csrr t0, mcause;
@@ -41,15 +40,18 @@ FN_trap_routine:
     /* HACK: if not uart1, for gpio21 interrupt */
     j LB_gpio21_intr;
 
+.p2align 2
 LB_uart1_intr: /* Uart1 interrupt */
 
     j LB_trap_routine_end;
 
+.p2align 2
 LB_gpio21_intr: /* Gpio21 interrupt */
 
     li a0, 0x00200000;
     call FN_gpio_clear_rise_pend;
 
+.p2align 2
 LB_trap_routine_end:
     sw t2, 0(t0); /* Write with any value means completion */
 
