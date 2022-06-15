@@ -53,6 +53,11 @@ LB_gpio21_intr: /* Gpio21 interrupt */
 
 .p2align 2
 LB_trap_routine_end:
+
+    li t0, FE310_PLICMMAP_BASE;
+    li t1, PLIC_CLAIMCOMP_CTX1_OFFSET;
+    add t0, t1, t0; /* t0 has the claim/comp reg addr */
+
     sw t2, 0(t0); /* Write with any value means completion */
 
 mret; /* NOTE: it should be MRET */
