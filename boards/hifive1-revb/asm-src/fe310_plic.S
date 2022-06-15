@@ -13,7 +13,7 @@
 .global FN_plic_set_threshold;
 
 .include "RV_PLIC.S" /** From RISC-V Spec */
-.include "fe310_g002_mmap_h.S" /* FE310 Mmap */
+.include "fe310_mmap_h.S" /* FE310 Mmap */
 
 /******************************
  * FUNCTION to set priority for interrupt sources

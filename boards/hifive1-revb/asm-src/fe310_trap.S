@@ -16,7 +16,7 @@
 .equiv MACHINE_TI_MASK, 0x7
 .equiv MACHINE_EI_MASK, 0xb
 
-.include "fe310_g002_mmap_h.S"  /** FE310 Mmap */
+.include "fe310_mmap_h.S"  /** FE310 Mmap */
 .include "RV_PLIC.S" /** From RISC-V Spec */
 
 .p2align 2
