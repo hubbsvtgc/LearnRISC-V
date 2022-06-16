@@ -94,9 +94,38 @@ FN_app_entry:
 .p2align 2
     LB_loop_tx_start:
 
-        li a0, 0xaa;
+    /* delay 2 */
+    li a0, 0xffffff; 
+
+    .p2align 2
+    LB_delayloop2_start:
+
+      beqz a0, LB_delayloop2_end;
+      addi a0, a0, -1;
+      j LB_delayloop2_start;
+  
+    .p2align 2
+    LB_delayloop2_end: 
+
+        li a0, 0x0;
         call FN_uart1_send_byte;
-        j LB_loop_tx_start;
+     
+    /* delay 2 */
+    li a0, 0xffffff; 
+
+    .p2align 2
+    LB_delayloop1_start:
+
+      beqz a0, LB_delayloop1_end;
+      addi a0, a0, -1;
+      j LB_delayloop1_start;
+  
+    .p2align 2
+    LB_delayloop1_end: 
+
+    li a0, 0xff;
+    call FN_uart1_send_byte;
+    j LB_loop_tx_start;
 
 .p2align 2
     LB_loop_tx_end:

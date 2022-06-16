@@ -89,7 +89,8 @@ FN_gpio_select_iof:
     /* Register A0 has the pins to select as io functionality */
     li t0, GPIO_BASE ;
     lw t1, GPIO_IOF_SEL_OFF(t0);
-    or t1, t1, a0;
+    not a0, a0;
+    and t1, t1, a0;
     sw t1, GPIO_IOF_SEL_OFF(t0);
 ret;
 
