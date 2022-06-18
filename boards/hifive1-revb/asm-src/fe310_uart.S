@@ -7,7 +7,7 @@
 
 .section .text
 
-.equiv UART1_BASE, 0x10023000
+.include "fe310_mmap_h.S" /* To get UART Base Address */
 
 .equiv UART_TXDATA_OFFSET, 0x00
 .equiv UART_RXDATA_OFFSET, 0x04

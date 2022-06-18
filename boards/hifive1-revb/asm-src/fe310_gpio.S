@@ -7,6 +7,8 @@
 
 .section .text
 
+.include "fe310_mmap_h.S" /* To include GPIO base address */
+
 /* Make functions visible to app */
 .global FN_gpio_read_value;
 .global FN_gpio_configure_as_input;
@@ -27,7 +29,6 @@
 /* --------------------------------------------
    OFFSETs for memory mapped registers for GPIO 
 ----------------------------------------------- */
-.equiv GPIO_BASE, 0x10012000  /* GPIO Base address */
 .equiv GPIO_IN_VALUE_OFF, 0x00
 .equiv GPIO_IN_EN_OFF, 0x04
 .equiv GPIO_OUT_EN_OFF, 0x08
