@@ -71,7 +71,7 @@ FN_app_entry:
 
     /* set 2 stop bits */
     li a0, 1;
-    call FN_uart1_set_stopbits;
+    call FN_uart1_set_stopbits; 
 
     /* Enable uart 1 tx water mark interrupt*/
     li a0, 1;
@@ -81,23 +81,13 @@ FN_app_entry:
     li a0, 0xaa;
     call FN_uart1_send_byte;
 
-/* send byte 0xaa 
-    li a0, 0xaa;
-    call FN_uart1_send_byte;
-
-    li a0, 0xaa;
-    call FN_uart1_send_byte;
-*/
     /* Enable UART 1 */
     call FN_uart1_enable;
-
-.p2align 2
-    LB_loop_tx_start:
 
     /* delay 2 */
     li a0, 0xffffff; 
 
-    .p2align 2
+       .p2align 2
     LB_delayloop2_start:
 
       beqz a0, LB_delayloop2_end;
@@ -107,25 +97,11 @@ FN_app_entry:
     .p2align 2
     LB_delayloop2_end: 
 
-        li a0, 0x0;
+.p2align 2
+    LB_loop_tx_start:
+
+        li a0, 0xbc;
         call FN_uart1_send_byte;
      
-    /* delay 2 */
-    li a0, 0xffffff; 
-
-    .p2align 2
-    LB_delayloop1_start:
-
-      beqz a0, LB_delayloop1_end;
-      addi a0, a0, -1;
-      j LB_delayloop1_start;
-  
-    .p2align 2
-    LB_delayloop1_end: 
-
-    li a0, 0xff;
-    call FN_uart1_send_byte;
-    j LB_loop_tx_start;
-
 .p2align 2
     LB_loop_tx_end:

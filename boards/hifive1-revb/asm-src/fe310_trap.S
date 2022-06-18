@@ -44,13 +44,13 @@ FN_trap_routine:
 LB_uart1_intr: /* Uart1 interrupt */
 
     /* send 3 times 0xaa  */
-    li a0, 0xaa;
+    li a0, 0xbc;
     call FN_uart1_send_byte;
 
-    li a0, 0xaa;
+    li a0, 0xbc;
     call FN_uart1_send_byte;
 
-    li a0, 0xaa;
+    li a0, 0xbc;
     call FN_uart1_send_byte;
 
     j LB_trap_routine_end;
