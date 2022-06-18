@@ -53,7 +53,9 @@ FN_uart1_set_txwmark:
 
 ret;
 
-/* Function to set the number of stop bits in UART 1 */
+/* Function to set the number of stop bits in UART 1
+Input can be either 1 or 0*/
+
 .p2align 2
 FN_uart1_set_stopbits:
     /* Args- a0 - Number of stop bits 
@@ -62,13 +64,15 @@ FN_uart1_set_stopbits:
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
-    andi t1, t1, -2;
-    or t1, t1, a0;
-    sw t1, UART_TXCTRL_OFFSET(t0); /* Set stop bits */
+    slli a0, a0, 1;  /* shift input to stop bit position */
+    or t1, t1, a0;   /* set stop bit count */
+    sw t1, UART_TXCTRL_OFFSET(t0); /* Store back */
 
 ret;
 
-/* Function to enable UART 1 */
+/* Function to enable UART 1
+NO input to this function */
+
 .p2align 2
 FN_uart1_enable:
 
@@ -82,7 +86,9 @@ FN_uart1_enable:
 
 ret;
 
-/* Function to disable UART 1 */
+/* Function to disable UART 1
+No Input to this function */
+
 .p2align 2
 FN_uart1_disable:
 
@@ -91,7 +97,7 @@ FN_uart1_disable:
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
-    xori t1, t1, 1;
+    andi t1, t1, -2;
     sw t1, UART_TXCTRL_OFFSET(t0); /* Disable */
 
 ret;
