@@ -84,24 +84,11 @@ FN_app_entry:
     /* Enable UART 1 */
     call FN_uart1_enable;
 
-    /* delay 2 */
-    li a0, 0xffffff; 
-
-       .p2align 2
-    LB_delayloop2_start:
-
-      beqz a0, LB_delayloop2_end;
-      addi a0, a0, -1;
-      j LB_delayloop2_start;
-  
-    .p2align 2
-    LB_delayloop2_end: 
-
 .p2align 2
     LB_loop_tx_start:
 
-        li a0, 0xbc;
-        call FN_uart1_send_byte;
+    li a0, 0xbc;
+    call FN_uart1_send_byte;
      
 .p2align 2
     LB_loop_tx_end:

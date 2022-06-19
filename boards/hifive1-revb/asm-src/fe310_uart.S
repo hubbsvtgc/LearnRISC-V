@@ -30,7 +30,7 @@
 .p2align 2
 FN_uart1_set_115200:
     /* With tlclk at 16Mhz, to achieve 115200 baud,
-    divisor should be 512*/
+    divisor should be 138 */
 
     li t0, UART1_BASE;
     li t1, 138;
@@ -113,7 +113,9 @@ FN_uart1_send_byte:
 
 ret;
 
-/* Function to enable UART 1 interrupt */
+/* Function to enable UART 1 tx 
+water mark interrupt */
+
 .p2align 2
 FN_uart1_enable_txwm_intr:
 
