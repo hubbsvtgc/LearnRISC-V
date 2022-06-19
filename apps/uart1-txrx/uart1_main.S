@@ -65,8 +65,8 @@ FN_app_entry:
     /* set UART 1 to baud 115200 */
     call FN_uart1_set_115200;
 
-    /* set UART 1 tx water mark to 3 */
-    li a0, 3;
+    /* set UART1 tx water mark to 1 */
+    li a0, 1;
     call FN_uart1_set_txwmark;
 
     /* set 2 stop bits */
@@ -77,7 +77,15 @@ FN_app_entry:
     li a0, 1;
     call FN_uart1_enable_txwm_intr;
 
-    /* send byte 0xaa */
+    /* send byte 0xfc */
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+
+    /* send byte 0xf0 */
+    li a0, 0xaa;
+    call FN_uart1_send_byte;
+
+    /* send byte 0xc0 */
     li a0, 0xaa;
     call FN_uart1_send_byte;
 
@@ -89,6 +97,7 @@ FN_app_entry:
 
     li a0, 0xbc;
     call FN_uart1_send_byte;
+    j LB_loop_tx_start;
      
 .p2align 2
     LB_loop_tx_end:
