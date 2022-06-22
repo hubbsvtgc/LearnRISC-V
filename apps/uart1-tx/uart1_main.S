@@ -78,15 +78,15 @@ FN_app_entry:
     call FN_uart1_enable_txwm_intr;
 
     /* send byte 0xfc */
-    li a0, 0xaa;
+    li a0, 0xfc;
     call FN_uart1_send_byte;
 
     /* send byte 0xf0 */
-    li a0, 0xaa;
+    li a0, 0xf0;
     call FN_uart1_send_byte;
 
     /* send byte 0xc0 */
-    li a0, 0xaa;
+    li a0, 0xc0;
     call FN_uart1_send_byte;
 
     /* Enable UART 1 */
