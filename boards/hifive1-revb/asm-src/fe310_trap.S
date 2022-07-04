@@ -24,7 +24,12 @@
 /* Trap vector base address should be aligned on 4-byte boundary 
  * this dont take any argument */
 FN_trap_routine:
-    nop;
+    /* Back up ra, a0, t0, t1 registers */
+    sw ra, 0(sp);
+    sw a0, 4(sp);
+    sw t0, 8(sp);
+    sw t1, 12(sp);
+
     csrr t0, mcause;
 
     li t0, FE310_PLICMMAP_BASE;
@@ -59,6 +64,13 @@ LB_trap_routine_end:
     add t0, t1, t0; /* t0 has the claim/comp reg addr */
 
     sw t2, 0(t0); /* Write with any value means completion */
+
+    /* Restore ra, a0, t0, t1 registers */
+
+    lw ra, 0(sp);
+    lw a0, 4(sp);
+    lw t0, 8(sp);
+    lw t1, 12(sp);
 
 mret; /* NOTE: it should be MRET */
 
