@@ -20,11 +20,13 @@
 /* Make utility functions visible to app */
 .global FN_uart1_set_115200;
 .global FN_uart1_set_txwmark;
+.global FN_uart1_set_rxwmark;
 .global FN_uart1_set_stopbits;
 .global FN_uart1_send_byte;
 .global FN_uart1_enable;
 .global FN_uart1_disable;
 .global FN_uart1_enable_txwm_intr;
+.global FN_uart1_enable_rxwm_intr;
 
 /* Function to set UART 1 baud rate to 115200 */
 .p2align 2
@@ -50,6 +52,21 @@ FN_uart1_set_txwmark:
     andi t1, t1, -8;
     or t1, t1, a0;
     sh t1, UART_TXCTRL_OFFSET+2(t0); /* Set wmark */
+
+ret;
+
+/* Function to set rx water mark in UART 1 */
+.p2align 2
+FN_uart1_set_rxwmark:
+
+    /* Args- a0 - Transmit water mark level value 0-7*/
+
+    li t0, UART1_BASE;
+    lhu t1, UART_RXCTRL_OFFSET+2(t0); /* Read present value */
+
+    andi t1, t1, -8;
+    or t1, t1, a0;
+    sh t1, UART_RXCTRL_OFFSET+2(t0); /* Set wmark */
 
 ret;
 
@@ -113,8 +130,7 @@ FN_uart1_send_byte:
 
 ret;
 
-/* Function to enable UART 1 tx 
-water mark interrupt */
+/* Function enables UART 1 tx water mark interrupt */
 
 .p2align 2
 FN_uart1_enable_txwm_intr:
@@ -125,6 +141,21 @@ FN_uart1_enable_txwm_intr:
     lw t1, UART_INTR_EN_OFFSET(t0); /* Read present value */
 
     ori t1, t1, 1;
+    sw t1, UART_INTR_EN_OFFSET(t0); /* Enable */
+
+ret;
+
+/* Function enables UART 1 rx water mark interrupt */
+
+.p2align 2
+FN_uart1_enable_rxwm_intr:
+
+    /* bit[1]: 0 - disable rxwm, 1 - enable rxwm interrupt */
+
+    li t0, UART1_BASE;
+    lw t1, UART_INTR_EN_OFFSET(t0); /* Read present value */
+
+    ori t1, t1, 2;
     sw t1, UART_INTR_EN_OFFSET(t0); /* Enable */
 
 ret;
