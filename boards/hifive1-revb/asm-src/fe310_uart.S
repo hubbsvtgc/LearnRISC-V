@@ -8,14 +8,7 @@
 .section .text
 
 .include "fe310_mmap_h.S" /* To get UART Base Address */
-
-.equiv UART_TXDATA_OFFSET, 0x00
-.equiv UART_RXDATA_OFFSET, 0x04
-.equiv UART_TXCTRL_OFFSET, 0x08
-.equiv UART_RXCTRL_OFFSET, 0x0C
-.equiv UART_INTR_EN_OFFSET, 0x10
-.equiv UART_INTR_PEND_OFFSET, 0x14
-.equiv UART_BAUD_DIV_OFFSET, 0x18
+.include "fe310_uart_h.S"  /** UART register offsets */
 
 /* Make utility functions visible to app */
 .global FN_uart1_set_115200;
@@ -23,7 +16,9 @@
 .global FN_uart1_set_rxwmark;
 .global FN_uart1_set_stopbits;
 .global FN_uart1_send_byte;
-.global FN_uart1_enable;
+.global FN_uart1_receive_byte;
+.global FN_uart1_enable_tx;
+.global FN_uart1_enable_rx;
 .global FN_uart1_disable;
 .global FN_uart1_enable_txwm_intr;
 .global FN_uart1_enable_rxwm_intr;
@@ -87,11 +82,11 @@ FN_uart1_set_stopbits:
 
 ret;
 
-/* Function to enable UART 1
+/* Function to enable UART 1 tx
 NO input to this function */
 
 .p2align 2
-FN_uart1_enable:
+FN_uart1_enable_tx:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -101,6 +96,18 @@ FN_uart1_enable:
     ori t1, t1, 1;
     sw t1, UART_TXCTRL_OFFSET(t0); /* Enable */
 
+ret;
+
+.p2align 2
+FN_uart1_enable_rx:
+
+    /* bit[0]: 0 - disable, 1 - enable */
+
+    li t0, UART1_BASE;
+    lw t1, UART_RXCTRL_OFFSET(t0); /* Read present value */
+
+    ori t1, t1, 1;
+    sw t1, UART_RXCTRL_OFFSET(t0); /* Enable */
 ret;
 
 /* Function to disable UART 1
@@ -127,6 +134,17 @@ FN_uart1_send_byte:
 
       li t0, UART1_BASE;
       sw a0, UART_TXDATA_OFFSET(t0);
+
+ret;
+
+/* Function to receive a byte through UART 1 */
+.p2align 2
+FN_uart1_receive_byte:
+    /* Elementary function to receive a byte
+     Output: a0 with input byte in [7:0] bits */
+
+      li t0, UART1_BASE;
+      lw a0, UART_RXDATA_OFFSET(t0);
 
 ret;
 
@@ -159,3 +177,4 @@ FN_uart1_enable_rxwm_intr:
     sw t1, UART_INTR_EN_OFFSET(t0); /* Enable */
 
 ret;
+

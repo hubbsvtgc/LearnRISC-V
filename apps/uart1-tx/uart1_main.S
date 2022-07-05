@@ -90,7 +90,7 @@ FN_app_entry:
     call FN_uart1_send_byte;
 
     /* Enable UART 1 */
-    call FN_uart1_enable;
+    call FN_uart1_enable_tx;
 
 .p2align 2
     LB_loop_tx_start:

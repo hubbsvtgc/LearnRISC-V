@@ -6,7 +6,10 @@
  *
  ****************************************************************************/
 
-.equiv FE310_PLICMMAP_BASE, 0x0C000000 /* Implementation specific */
-.equiv GPIO_BASE, 0x10012000  /* GPIO Base address */
-.equiv UART1_BASE, 0x10023000 /* UART1 Base Address */
-
+.equiv UART_TXDATA_OFFSET, 0x00
+.equiv UART_RXDATA_OFFSET, 0x04
+.equiv UART_TXCTRL_OFFSET, 0x08
+.equiv UART_RXCTRL_OFFSET, 0x0C
+.equiv UART_INTR_EN_OFFSET, 0x10
+.equiv UART_INTR_PEND_OFFSET, 0x14
+.equiv UART_BAUD_DIV_OFFSET, 0x18

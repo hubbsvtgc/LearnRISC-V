@@ -6,6 +6,10 @@
  *
  ****************************************************************************/
 
+.equiv RECEIVE_START_ADDR, 0x80003000
+
+/* rec_addr: .word 0x80004000; */
+
 .section .text
 .global FN_app_entry;
 
@@ -88,7 +92,7 @@ FN_app_entry:
 
     /* Enable uart 1 tx water mark interrupt*/
     li a0, 1;
-    call FN_uart1_enable_txwm_intr;
+   /* NOTE: call FN_uart1_enable_txwm_intr; */
 
     /* Enable uart 1 rx water mark interrupt*/
     li a0, 1;
@@ -106,8 +110,11 @@ FN_app_entry:
     li a0, 0xc0;
     call FN_uart1_send_byte;
 
-    /* Enable UART 1 */
-    call FN_uart1_enable;
+    /* Enable UART 1 Tx*/
+    call FN_uart1_enable_tx;
+
+    /* Enable UART 1 Rx*/
+    call FN_uart1_enable_rx;
 
 .p2align 2
     LB_loop_tx_start:
@@ -115,6 +122,6 @@ FN_app_entry:
     li a0, 0xbc;
     call FN_uart1_send_byte;
     j LB_loop_tx_start;
-     
+
 .p2align 2
     LB_loop_tx_end:

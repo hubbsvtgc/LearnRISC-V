@@ -1,3 +1,4 @@
+
 /****************************************************************************
  *
  *   Copyright (C) 2022 bsvtgc@gmail.com. All rights reserved.
@@ -18,6 +19,9 @@
 
 .include "fe310_mmap_h.S"  /** FE310 Mmap */
 .include "RV_PLIC.S" /** From RISC-V Spec */
+.include "fe310_uart_h.S"  /** UART register offsets */
+
+uart1_rec_addr: .word 0x80003000;
 
 .p2align 2
 
@@ -48,7 +52,36 @@ FN_trap_routine:
 .p2align 2
 LB_uart1_intr: /* Uart1 interrupt */
 
-    j LB_trap_routine_end;
+    /* if uart tx [bit:0] wm interrupt transmit a byte */
+
+    li a0, UART1_BASE;
+    lw t0, UART_INTR_PEND_OFFSET(a0);
+
+    andi t0, t0, 1;
+    li t1, 1;
+    bne t0, t1, LB_trap_uart_rx_check;
+
+    LB_trap_uart1_tx:
+    li a0, 0xcb;
+    call FN_uart1_send_byte;
+
+LB_trap_uart_rx_check:
+
+    /* if uart rx [bit:1] wm interrupt receive a byte */
+
+    li a0, UART1_BASE;
+    lw t0, UART_INTR_PEND_OFFSET(a0);
+
+    andi t0, t0, 2;
+    li t1, 2;
+    bne t0, t1, LB_trap_routine_end;
+
+    call FN_uart1_receive_byte; /* received byte is in a0 */
+
+    lw t0, uart1_rec_addr;
+    sw a0, 0(t0); /* Write the recived data from RECEIVE_START_ADDR */
+
+j LB_trap_routine_end;
 
 .p2align 2
 LB_gpio21_intr: /* Gpio21 interrupt */
@@ -73,6 +106,5 @@ LB_trap_routine_end:
     lw t1, 12(sp);
 
 mret; /* NOTE: it should be MRET */
-
 
 
