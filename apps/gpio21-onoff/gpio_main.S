@@ -14,8 +14,6 @@
 .equiv GPIO21_BIT_POSITION, 0x00200000
 .equiv GPIO21_INTERRUPT_SRC, 29
 
-.equiv AONRTC_INTERRUPT_SRC, 2
-
 .p2align 2
 
  FN_app_entry:
