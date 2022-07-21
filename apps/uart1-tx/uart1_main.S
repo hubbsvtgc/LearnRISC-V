@@ -12,8 +12,6 @@
 .equiv GPIO18_UART1_TX, 0x00040000
 .equiv GPIO23_UART1_RX, 0x00800000
 
-.equiv UART1_INTERRUPT_SRC, 4
-
 .p2align 2
 FN_app_entry:
 

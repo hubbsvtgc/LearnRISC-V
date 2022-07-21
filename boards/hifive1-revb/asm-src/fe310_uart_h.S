@@ -6,6 +6,8 @@
  *
  ****************************************************************************/
 
+.equiv UART1_INTERRUPT_SRC, 4
+
 .equiv UART_TXDATA_OFFSET, 0x00
 .equiv UART_RXDATA_OFFSET, 0x04
 .equiv UART_TXCTRL_OFFSET, 0x08
