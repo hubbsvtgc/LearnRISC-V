@@ -79,7 +79,7 @@ LB_trap_uart_rx_check:
     call FN_uart1_receive_byte; /* received byte is in a0 */
 
     lw t0, uart1_rec_addr;
-    sw a0, 0(t0); /* Write the recived data from RECEIVE_START_ADDR */
+    sw a0, 0(t0); /* Write the received data */
 
 j LB_trap_routine_end;
 
