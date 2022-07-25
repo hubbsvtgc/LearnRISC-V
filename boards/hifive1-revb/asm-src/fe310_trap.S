@@ -36,6 +36,10 @@ FN_trap_routine:
 
     csrr t0, mcause;
 
+    /*NOTE:
+    Exceptions are NOT handled now. Hence assumption
+    that this path is taken ONLY for interrupts */
+
     li t0, FE310_PLICMMAP_BASE;
     li t1, PLIC_CLAIMCOMP_CTX1_OFFSET;
     add t0, t1, t0; /* t0 has the claim/comp reg addr */
@@ -61,10 +65,9 @@ LB_uart1_intr: /* Uart1 interrupt */
     li t1, 1;
     bne t0, t1, LB_trap_uart_rx_check;
 
-    LB_trap_uart1_tx:
-    li a0, 0xcb;
-    call FN_uart1_send_byte;
+    /* Skipping uart tx interrupt now */
 
+.p2align 2
 LB_trap_uart_rx_check:
 
     /* if uart rx [bit:1] wm interrupt receive a byte */
