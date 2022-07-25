@@ -10,13 +10,6 @@
 
 .section .text
 
-.equiv INTERRUPT_MASK, 0x80000000
-.equiv EXCEPTION_CODE_MASK, 0x7FFFFFFF
-.equiv EXT_INTR_BIT, 0x8
-.equiv MACHINE_SI_MASK, 0x3
-.equiv MACHINE_TI_MASK, 0x7
-.equiv MACHINE_EI_MASK, 0xb
-
 .include "fe310_mmap_h.S"  /** FE310 Mmap */
 .include "RV_PLIC.S" /** From RISC-V Spec */
 .include "fe310_uart_h.S"  /** UART register offsets */
@@ -109,5 +102,3 @@ LB_trap_routine_end:
     lw t1, 12(sp);
 
 mret; /* NOTE: it should be MRET */
-
-

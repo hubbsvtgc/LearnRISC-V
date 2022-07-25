@@ -23,7 +23,10 @@
 .global FN_uart1_enable_txwm_intr;
 .global FN_uart1_enable_rxwm_intr;
 
-/* Function to set UART 1 baud rate to 115200 */
+/* Function to set UART 1 baud rate to 115200
+    Input: None
+    Output: None */
+
 .p2align 2
 FN_uart1_set_115200:
     /* With tlclk at 16Mhz, to achieve 115200 baud,
@@ -35,11 +38,12 @@ FN_uart1_set_115200:
     sw t1, UART_BAUD_DIV_OFFSET(t0);
 ret;
 
-/* Function to set tx water mark in UART 1 */
+/* Function to set tx water mark in UART 1
+    Input: a0 - Transmit water mark level value 0-7
+    Output: None */
+
 .p2align 2
 FN_uart1_set_txwmark:
-
-    /* Args- a0 - Transmit water mark level value 0-7*/
 
     li t0, UART1_BASE;
     lhu t1, UART_TXCTRL_OFFSET+2(t0); /* Read present value */
@@ -50,11 +54,12 @@ FN_uart1_set_txwmark:
 
 ret;
 
-/* Function to set rx water mark in UART 1 */
+/* Function to set rx water mark in UART 1
+    Input: a0 - Transmit water mark level value 0-7
+    Output: None */
+
 .p2align 2
 FN_uart1_set_rxwmark:
-
-    /* Args- a0 - Transmit water mark level value 0-7*/
 
     li t0, UART1_BASE;
     lhu t1, UART_RXCTRL_OFFSET+2(t0); /* Read present value */
@@ -66,12 +71,11 @@ FN_uart1_set_rxwmark:
 ret;
 
 /* Function to set the number of stop bits in UART 1
-Input can be either 1 or 0*/
+    Input: a0- can be either 1 (2 stop bits) or 0 (1 stop bit)
+    Output: None */
 
 .p2align 2
 FN_uart1_set_stopbits:
-    /* Args- a0 - Number of stop bits 
-    bit[1]: 0 - 1 stop bit, 1 - 2 stop bits */
 
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
@@ -83,7 +87,8 @@ FN_uart1_set_stopbits:
 ret;
 
 /* Function to enable UART 1 tx
-NO input to this function */
+    Input: None
+    Output: None */
 
 .p2align 2
 FN_uart1_enable_tx:
@@ -111,7 +116,8 @@ FN_uart1_enable_rx:
 ret;
 
 /* Function to disable UART 1
-No Input to this function */
+    Input: None
+    Output: None */
 
 .p2align 2
 FN_uart1_disable:
@@ -130,7 +136,8 @@ ret;
 .p2align 2
 FN_uart1_send_byte:
     /* Elementary function to send a byte
-     Input: a0 with input byte in [7:0] bits */
+     Input: a0 with input byte in [7:0] bits
+     Outpu: None */
 
       li t0, UART1_BASE;
       sw a0, UART_TXDATA_OFFSET(t0);
@@ -141,10 +148,11 @@ ret;
 .p2align 2
 FN_uart1_receive_byte:
     /* Elementary function to receive a byte
-     Output: a0 with input byte in [7:0] bits */
+    Input: None
+    Output: a0 with input byte in [7:0] bits */
 
-      li t0, UART1_BASE;
-      lw a0, UART_RXDATA_OFFSET(t0);
+    li t0, UART1_BASE;
+    lw a0, UART_RXDATA_OFFSET(t0);
 
 ret;
 
