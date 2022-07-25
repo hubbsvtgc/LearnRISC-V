@@ -88,21 +88,11 @@ FN_app_entry:
     li a0, 1;
     call FN_uart1_set_stopbits; 
 
-    /* Enable uart 1 tx water mark interrupt*/
-    li a0, 1;
-   /* NOTE: call FN_uart1_enable_txwm_intr; */
+    /* Enable uart 1 tx water mark interrupt
+       call FN_uart1_enable_txwm_intr; */
 
     /* Enable uart 1 rx water mark interrupt*/
-    li a0, 1;
     call FN_uart1_enable_rxwm_intr;
-
-    /* send byte 0xfc */
-    li a0, 0xfc;
-    call FN_uart1_send_byte;
-
-    /* send byte 0xf0 */
-    li a0, 0xf0;
-    call FN_uart1_send_byte;
 
     /* send byte 0xc0 */
     li a0, 0xc0;

@@ -148,7 +148,9 @@ FN_uart1_receive_byte:
 
 ret;
 
-/* Function enables UART 1 tx water mark interrupt */
+/* Function enables UART 1 tx water mark interrupt
+    Input: None
+    Output: None */
 
 .p2align 2
 FN_uart1_enable_txwm_intr:
@@ -163,7 +165,9 @@ FN_uart1_enable_txwm_intr:
 
 ret;
 
-/* Function enables UART 1 rx water mark interrupt */
+/* Function enables UART 1 rx water mark interrupt
+   Input: None
+   Output: None */
 
 .p2align 2
 FN_uart1_enable_rxwm_intr:
