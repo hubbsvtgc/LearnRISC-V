@@ -9,7 +9,7 @@
 1. Instructions to build
 
 ## Directory Structure  
-![alt text](https://github.com/hubbsvtgc/LearnRISC-V/blob/trunk/DirectoryStruct.png?raw=true)
+![alt text](https://github.com/hubbsvtgc/LearnRISC-V/blob/release/DirectoryStruct.png?raw=true)
 
 
 ## Instructions to build  
@@ -18,19 +18,17 @@ Make sure you have installed the GNU toolchain and OpenOCD from https://www.sifi
 
 Issue the command `./build.sh <board> <app>` to build for a particular `board` and `app`. <br > 
 
-<br >For hifive1-revb board, <br > 
-`./build.sh hifive1-revb gpio21-onoff` builds the app `gpio21-onoff` for `hifive1-revb` and 
+This repo has multiple braches. 
+<br >For hifive1-revb board on release branch, <br > 
+`./build.sh ifive1-revb led-blink` builds the app `led-blink` for `hifive1-revb` and 
 <br >`./build.sh cleanse` to clean. 
 
 ## Naming
 ## General Prefixes
-FN_ prefix for functions  
-LB_ prefix for labels  (address offset)  
-VAR_ prefix for variables  (Stack start address)  
-K_ prefix for temporary constant (K_SRCID_7)  
   
 .equiv ALL_UPPERCASE_ for constants (memory mapped address, Bitmasks, Constants)  
 
+These constants go in `module.inc` file in `inc` directory. 
   
 ## Module Level Prefixes
 
