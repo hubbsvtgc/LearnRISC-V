@@ -42,7 +42,7 @@ undergo controlled execution through gdb. */
 .globl _start_entry; /* To be visible to linker */
 .extern trap_base;
 
-.section .text
+.section .start_entry
 
 Lalign4 _start_entry:
 

@@ -28,6 +28,11 @@ fi
 
 BOARD=$1
 APP=$2
+MEM=$3
+
+if [ -z "$3" ]; then
+MEM=ram
+fi
 
 set_asembler ()
 {
@@ -41,7 +46,7 @@ set_linker ()
 {
 # GNU Linker
     GNU_LD=riscv64-unknown-elf-ld
-    GNU_LD_SCRIPT=$BOARD.lscript
+    GNU_LD_SCRIPT=$BOARD-$MEM.lscript
     GNU_LD_FLAGS=-belf32-littleriscv
 }
 

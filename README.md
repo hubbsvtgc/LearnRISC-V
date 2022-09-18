@@ -20,7 +20,7 @@ Issue the command `./build.sh <board> <app>` to build for a particular `board` a
 
 This repo has multiple braches. 
 <br >For hifive1-revb board on release branch, <br > 
-`./build.sh ifive1-revb led-blink` builds the app `led-blink` for `hifive1-revb` and 
+`./build.sh hifive1-revb led-blink` builds the app `led-blink` for `hifive1-revb` and
 <br >`./build.sh cleanse` to clean. 
 
 ## Naming
