@@ -51,6 +51,7 @@ SECTIONS
 {
     .text :  /* GAS dont accept .code section */
     {
+        KEEP(*(.start_entry)) /* WARNING: Make sure .start_entry is mapped into RAM */
         KEEP(*(.mtvec_table))
         *(.text*)
     }

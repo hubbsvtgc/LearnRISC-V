@@ -68,12 +68,7 @@ SECTIONS
     > rom
     . = ALIGN(4);
 
-    . = 0x20000000; /* Boot Entry point as per FE310-g002 soc manual */
 
-    .start_entry :
-    {
-      KEEP(*(.start_entry))
-    }
 
   . = 0x80000000;
 
