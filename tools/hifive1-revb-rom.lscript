@@ -68,9 +68,7 @@ SECTIONS
     > rom
     . = ALIGN(4);
 
-
-
-  . = 0x80000000;
+  . = 0x80002000; /* Its set at 0x80002000 ( instead of 0x80000000) to use it for RUST */
 
     /* Set Stack in RAM */
     linker_stack_start = .;
