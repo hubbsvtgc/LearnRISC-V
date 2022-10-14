@@ -12,6 +12,8 @@
 .equiv PLIC_BASE, 0x0C000000 /* Implementation specific */
 .equiv GPIO_BASE, 0x10012000  /* GPIO Base address */
 .equiv UART1_BASE, 0x10023000 /* UART1 Base Address */
+.equiv SPI1_BASE, 0x10024000 /* SPI 1 Base Address */
+.equiv SPI2_BASE, 0x10034000 /* SPI 2 Base Address */
 
 .endif
 
