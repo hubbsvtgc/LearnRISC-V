@@ -28,13 +28,23 @@ Lalign4 app_entry:
     li a0, GPIO_AS_SPI_PINS;
     call FN_gpio_select_iof;
 
-    li t0, 10;
-    blt t0, zero, loop10_end;
+loop_forever:
 
-    li a0, 0xF;
+    li a0, 0xcc;
     call spi_transmit;
 
-loop10_end:
+    /* delay */
+    li a0, 0xfffff;
+
+    Lalign4 LB_delayloop_start:
+
+        beqz a0, LB_delayloop_end;
+        addi a0, a0, -1;
+        j LB_delayloop_start;
+  
+    Lalign4 LB_delayloop_end:
+
+j loop_forever;
 
     j .
 
