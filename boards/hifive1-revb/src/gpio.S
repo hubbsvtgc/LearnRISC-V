@@ -23,6 +23,8 @@
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_clear_rise_pend;
 .global FN_gpio_select_iof;
+.global FN_gpio_enable_internal_pullup;
+.global FN_gpio_disable_internal_pullup;
 
 /* --------------------------------------------
    Utility functions to configure and use GPIOs.
@@ -108,4 +110,23 @@ Lalign4 FN_gpio_clear_rise_pend:
     lw t1, GPIO_RISE_INTR_PEND_OFF(t0);
     or t1, t1, a0;
     sw t1, GPIO_RISE_INTR_PEND_OFF(t0);
+ret;
+
+/* Enable internal pullup for pins */
+Lalign4 FN_gpio_enable_internal_pullup:
+    /* Register A0 has the pins to enable internal pull up */
+    li t0, GPIO_BASE ;
+    lw t1, GPIO_INTERNAL_PULL_EN_OFF(t0);
+    or t1, t1, a0;
+    sw t1, GPIO_IOF_EN_OFF(t0);
+ret;
+
+/* Disable internal pullup for pins */
+Lalign4 FN_gpio_disable_internal_pullup:
+    /* Register A0 has the pins to enable internal pull up */
+    li t0, GPIO_BASE ;
+    lw t1, GPIO_INTERNAL_PULL_EN_OFF(t0);
+    and t1, t1, a0;
+    xori t1, t1, -1;
+    sw t1, GPIO_IOF_EN_OFF(t0);
 ret;
