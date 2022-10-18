@@ -25,6 +25,8 @@
 .global FN_gpio_select_iof;
 .global FN_gpio_enable_internal_pullup;
 .global FN_gpio_disable_internal_pullup;
+.global gpio_set_high;
+.global gpio_set_low;
 
 /* --------------------------------------------
    Utility functions to configure and use GPIOs.
@@ -129,4 +131,57 @@ Lalign4 FN_gpio_disable_internal_pullup:
     and t1, t1, a0;
     xori t1, t1, -1;
     sw t1, GPIO_IOF_EN_OFF(t0);
+ret;
+
+/* convert 0-31 to register bit position */
+Lalign4 gpio_decimal2regbitpos:
+
+    /* Register A0 has the gpio pin number in decimal (0-31) */
+
+    beq a0, zero, gpio_decimal0;
+
+    /* 1 << decimal value */
+
+    li t0, 1;
+    sll a0, t0, a0;
+    ret;
+
+Lalign4 gpio_decimal0:
+    li a0, 1;
+    ret;
+
+/* Set a pin (0-31) high */
+
+Lalign4 gpio_set_high:
+
+    sw ra, 0(sp);
+    /* dont save  sw a0, 4(sp); */
+
+    call gpio_decimal2regbitpos;
+
+   /*  lw a0, 4(sp); */
+    lw ra, 0(sp);
+
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    or t1, t1, a0;
+    sw t1, GPIO_OUT_VALUE_OFF(t0);
+
+ret;
+
+/* Set a pin (0-31) low */
+
+Lalign4 gpio_set_low:
+
+    sw ra, 0(sp);
+
+    call gpio_decimal2regbitpos;
+
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    xor t1, t1, a0; /* logic wont work if initial state is 0 */
+    sw t1, GPIO_OUT_VALUE_OFF(t0);
+
+    lw ra, 0(sp);
+
 ret;

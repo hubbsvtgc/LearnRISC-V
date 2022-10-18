@@ -20,6 +20,39 @@
 
 .include "inc/mmap.inc"  /** FE310 Mmap */
 
+.equiv GPIO0, 0
+.equiv GPIO1, 1
+.equiv GPIO2, 2
+.equiv GPIO3, 3
+.equiv GPIO4, 4
+.equiv GPIO5, 5
+.equiv GPIO6, 6
+.equiv GPIO7, 7
+.equiv GPIO8, 8
+.equiv GPIO9, 9
+.equiv GPIO10, 10
+.equiv GPIO11, 11
+.equiv GPIO12, 12
+.equiv GPIO13, 13
+.equiv GPIO14, 14
+.equiv GPIO15, 15
+.equiv GPIO16, 16
+.equiv GPIO17, 17
+.equiv GPIO18, 18
+.equiv GPIO19, 19
+.equiv GPIO20, 20
+.equiv GPIO21, 21
+.equiv GPIO22, 22
+.equiv GPIO23, 23
+.equiv GPIO24, 24
+.equiv GPIO25, 25
+.equiv GPIO26, 26
+.equiv GPIO27, 27
+.equiv GPIO28, 28
+.equiv GPIO29, 29
+.equiv GPIO30, 30
+.equiv GPIO31, 31
+
 .equiv GPIO_IN_VALUE_OFF, 0x00
 .equiv GPIO_IN_EN_OFF, 0x04
 .equiv GPIO_OUT_EN_OFF, 0x08
