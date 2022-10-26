@@ -133,55 +133,56 @@ Lalign4 FN_gpio_disable_internal_pullup:
     sw t1, GPIO_IOF_EN_OFF(t0);
 ret;
 
-/* convert 0-31 to register bit position */
-Lalign4 gpio_decimal2regbitpos:
+Lalign4 gpio_generate_mask:
 
-    /* Register A0 has the gpio pin number in decimal (0-31) */
+    /* reg a0 has the gpio number ( 0 - 31) */
 
-    beq a0, zero, gpio_decimal0;
-
-    /* 1 << decimal value */
-
+    beq a0, zero, gpio0;
     li t0, 1;
-    sll a0, t0, a0;
+    sll a0, t0, a0; /* 1 << gpio number */
     ret;
 
-Lalign4 gpio_decimal0:
-    li a0, 1;
+gpio0:
+    li a0, 1; /* 0000 0000 0000 0000 0000 0000 0000 0001 */
     ret;
-
-/* Set a pin (0-31) high */
 
 Lalign4 gpio_set_high:
 
     sw ra, 0(sp);
-    /* dont save  sw a0, 4(sp); */
 
-    call gpio_decimal2regbitpos;
+    /* Register A0 has the gpio pin number */
+    /* Generate the mask */
+    call gpio_generate_mask;
 
-   /*  lw a0, 4(sp); */
     lw ra, 0(sp);
 
+    /* Perform bitwise OR operation */
     li t0, GPIO_BASE;
     lw t1, GPIO_OUT_VALUE_OFF(t0);
-    or t1, t1, a0;
-    sw t1, GPIO_OUT_VALUE_OFF(t0);
+    or a0, t1, a0;
+
+    sw a0, GPIO_OUT_VALUE_OFF(t0);
 
 ret;
-
-/* Set a pin (0-31) low */
 
 Lalign4 gpio_set_low:
 
     sw ra, 0(sp);
 
-    call gpio_decimal2regbitpos;
-
-    li t0, GPIO_BASE;
-    lw t1, GPIO_OUT_VALUE_OFF(t0);
-    xor t1, t1, a0; /* logic wont work if initial state is 0 */
-    sw t1, GPIO_OUT_VALUE_OFF(t0);
+    /* Register A0 has the gpio pin number */
+    /* Generate the mask */
+    call gpio_generate_mask;
 
     lw ra, 0(sp);
+
+    /* Invert the mask */
+    not a0, a0;
+
+    /* Perform bitwise AND operation */
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    and a0, t1, a0;
+
+    sw a0, GPIO_OUT_VALUE_OFF(t0);
 
 ret;

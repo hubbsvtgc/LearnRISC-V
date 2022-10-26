@@ -36,7 +36,6 @@ Lalign4 delayloop_start:
     j delayloop_start;
 
 Lalign4 delayloop_end:
-
 ret;
 
 Lalign4 app_entry:
@@ -60,6 +59,7 @@ Lalign4 app_entry:
     li a0, 0xff;
     call delay;
 .endif
+
     li a0, GPIO0;
     call gpio_set_low;
 
@@ -71,18 +71,15 @@ Lalign4 app_entry:
     li a0, GPIO0;
     call gpio_set_high;
 
-    /* set gpio1 low for DorC# line to send commands to Display */
-
-    li a0, 2;
-    call FN_gpio_configure_as_output;
-
-    li a0, GPIO1;
-    call gpio_set_high; /* set DC high and then low TBD due to logic error */
-
 .ifdef NOT_TEST
     li a0, 0xff;
     call delay;
 .endif
+
+   /* set gpio1 low for DorC# line to send commands to Display */
+
+    li a0, 2;
+    call FN_gpio_configure_as_output;
 
     li a0, GPIO1;
     call gpio_set_low;
@@ -100,104 +97,25 @@ Lalign4 app_entry:
     li a0, 0x12; /* unlock */
     call spi_transmit;
 
+oled_on_off_loop:
+
     li a0, 0xAE; /* display off - sleep mode */
     call spi_transmit;
 
-    li a0, 0xD5; /* Clock divider or osc freq */
-    call spi_transmit;
-    li a0, 0x91;
-    call spi_transmit;
+.ifdef NOT_TEST
+    li a0, 0xfffff;
+    call delay;
+.endif
 
-    li a0, 0x20; /* Memory Addressing mode */
+    li a0, 0xAF; /* display on */
     call spi_transmit;
-    li a0, 0x01; /* Page addressing mode, col auto +1 */
-    call spi_transmit;
-
-    li a0, 0xDA; /* COM Pins HW configuration */
-    call spi_transmit;
-    li a0, 0x12;
-    call spi_transmit;
-
-    li a0, 0x81; /* Contrast Control */
-    call spi_transmit;
-
-    li a0, 0x2A;  /* range 01 - ffh */
-    call spi_transmit;
-
-/* delay to avoid spi fifo overflow */
 
 .ifdef NOT_TEST
     li a0, 0xfffff;
     call delay;
 .endif
 
-    li a0, 0xAD; /* IREF */
-    call spi_transmit;
-
-    li a0, 0x10; /* Disable Internal iref */
-    call spi_transmit;
-
-    li a0, 0xA1; /* Set segment re-map */
-    call spi_transmit;
-
-    li a0, 0xC8; /* Set Com output scan dir */
-    call spi_transmit;
-
-    li a0, 0xA2; /* Display Start line */
-    call spi_transmit;
-    li a0, 0;
-    call spi_transmit;
-
-    li a0, 0xD3; /* Display offset */
-    call spi_transmit;
-    li a0, 0; 
-    call spi_transmit;
-
-
-
-/* delay to avoid spi fifo overflow */
-
-.ifdef NOT_TEST
-    li a0, 0xfffff;
-    call delay;
-.endif
-
-/* Discharge , pre-charge period  
-   Need to set a proper value: THis value DONT work 
-    li a0, 0xD9; 
-    call spi_transmit;
-    li a0, 0x43;
-    call spi_transmit;
-*/
-
-    li a0, 0xA5; /* A4 - Display GDDRAM Contents, A5 - Entire display ON */
-    call spi_transmit;
-
-    li a0, 0xA6; /* A6: 0 - OFF, 1 - ON; A7: 0 - ON, 1 - OFF */
-    call spi_transmit;
-
-    li a0, 0xDB; /* VCOM deselect level */
-    call spi_transmit;
-    li a0, 0x30;
-    call spi_transmit;
-
-    li a0, 0xAF;
-    call spi_transmit;
-
-.ifdef NOT_TEST
-    li a0, 0x2fffff;
-    call delay;
-.endif
-
-/*
-    li a0, 0xAe;
-    call spi_transmit;
-*/
-
-    /* set GPIO1_OLED_DC low to send data to Display */
-
-    li a0, GPIO1;
-    call gpio_set_high;
+j oled_on_off_loop;
 
     nop;
 
