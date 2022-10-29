@@ -23,6 +23,10 @@
 .global FN_gpio_enable_high_intr;
 .global FN_gpio_clear_rise_pend;
 .global FN_gpio_select_iof;
+.global FN_gpio_enable_internal_pullup;
+.global FN_gpio_disable_internal_pullup;
+.global gpio_set_high;
+.global gpio_set_low;
 
 /* --------------------------------------------
    Utility functions to configure and use GPIOs.
@@ -108,4 +112,77 @@ Lalign4 FN_gpio_clear_rise_pend:
     lw t1, GPIO_RISE_INTR_PEND_OFF(t0);
     or t1, t1, a0;
     sw t1, GPIO_RISE_INTR_PEND_OFF(t0);
+ret;
+
+/* Enable internal pullup for pins */
+Lalign4 FN_gpio_enable_internal_pullup:
+    /* Register A0 has the pins to enable internal pull up */
+    li t0, GPIO_BASE ;
+    lw t1, GPIO_INTERNAL_PULL_EN_OFF(t0);
+    or t1, t1, a0;
+    sw t1, GPIO_IOF_EN_OFF(t0);
+ret;
+
+/* Disable internal pullup for pins */
+Lalign4 FN_gpio_disable_internal_pullup:
+    /* Register A0 has the pins to enable internal pull up */
+    li t0, GPIO_BASE ;
+    lw t1, GPIO_INTERNAL_PULL_EN_OFF(t0);
+    and t1, t1, a0;
+    xori t1, t1, -1;
+    sw t1, GPIO_IOF_EN_OFF(t0);
+ret;
+
+Lalign4 gpio_generate_mask:
+
+    /* reg a0 has the gpio number ( 0 - 31) */
+
+    beq a0, zero, gpio0;
+    li t0, 1;
+    sll a0, t0, a0; /* 1 << gpio number */
+    ret;
+
+gpio0:
+    li a0, 1; /* 0000 0000 0000 0000 0000 0000 0000 0001 */
+    ret;
+
+Lalign4 gpio_set_high:
+
+    sw ra, 0(sp);
+
+    /* Register A0 has the gpio pin number */
+    /* Generate the mask */
+    call gpio_generate_mask;
+
+    lw ra, 0(sp);
+
+    /* Perform bitwise OR operation */
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    or a0, t1, a0;
+
+    sw a0, GPIO_OUT_VALUE_OFF(t0);
+
+ret;
+
+Lalign4 gpio_set_low:
+
+    sw ra, 0(sp);
+
+    /* Register A0 has the gpio pin number */
+    /* Generate the mask */
+    call gpio_generate_mask;
+
+    lw ra, 0(sp);
+
+    /* Invert the mask */
+    not a0, a0;
+
+    /* Perform bitwise AND operation */
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    and a0, t1, a0;
+
+    sw a0, GPIO_OUT_VALUE_OFF(t0);
+
 ret;
