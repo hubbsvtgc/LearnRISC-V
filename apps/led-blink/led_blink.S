@@ -5,7 +5,9 @@
  *
  ****************************************************************************/
 
- /* GPIO 19, 21 & 22 are connected to Green, Blue & Red LED correspondingly
+ /* GPIO 19 - Green,
+  * GPIO 21 - Blue,
+  * GPIO 22 - Red,
   * on the board schematics */
 
 .section .text
@@ -14,11 +16,8 @@
 
 .globl app_entry;
 
-.equiv GPIO21_BIT_POSITION, 0x00200000
-
 .equiv GPIO21, 21
-.equiv TEST, 1
-
+.equiv RUN, 1
 
 Lalign4 app_entry:
 
@@ -29,15 +28,8 @@ Lalign4 app_entry:
    li a0, GPIO21;
   call gpio_set_as_gpio;
 
-  /* Configure pin 21 as both input (to sense) & output 
-  li a0, GPIO21_BIT_POSITION;
-  call FN_gpio_configure_as_input; */
-
-  li a0, GPIO21_BIT_POSITION;
-  call FN_gpio_configure_as_output;
-
-    li a0, GPIO21_BIT_POSITION;
-  call FN_gpio_configure_as_output;
+  li a0, GPIO21;
+  call gpio_set_as_output;
 
 .ifdef TEST
 Lalign4 control_gpio21:
@@ -91,7 +83,6 @@ Lalign4 control_gpio21:
     Lalign4 LB_delayloop2_end:
 
   j control_gpio21;
-
 
 ret;
 

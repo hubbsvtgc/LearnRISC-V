@@ -48,16 +48,16 @@ Lalign4 app_entry:
     /* Configure pins as UART1 TX & RX */
 
     li a0, GPIO18_UART1_TX;
-    call FN_gpio_configure_as_iof;
+    call gpio_set_as_iof;
 
     li a0, GPIO23_UART1_RX;
-    call FN_gpio_configure_as_iof;
+    call gpio_set_as_iof;
 
     li a0, GPIO18_UART1_TX;
-    call FN_gpio_select_iof;
+    call gpio_select_iof;
 
     li a0, GPIO23_UART1_RX;
-    call FN_gpio_select_iof;
+    call gpio_select_iof;
 
     /* Set priority 3 to uart1 interrupt source 4 */
 

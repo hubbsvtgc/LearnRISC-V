@@ -13,7 +13,7 @@
 
 .globl app_entry;
 
-.equiv NOT_TEST, 1
+.equiv RUN, 1
 
 /* GPIO 0, 1, 2, 3, 4 & 5 used as below
    gpio0 -> gpio0     -> D_RESET_3ns
@@ -40,22 +40,50 @@ ret;
 
 Lalign4 app_entry:
 
-    li a0, GPIO_AS_SPI_PINS;
-    call FN_gpio_configure_as_iof;
+    li a0, GPIO0;
+    call gpio_set_as_gpio;
 
-    li a0, GPIO_AS_SPI_PINS;
-    call FN_gpio_select_iof;
+    li a0, GPIO1;
+    call gpio_set_as_gpio;
+
+    li a0, GPIO2;
+    call gpio_set_as_iof;
+
+    li a0, GPIO2;
+    li a1, 0;
+    call gpio_select_iof;
+
+    li a0, GPIO3;
+    call gpio_set_as_iof;
+
+    li a0, GPIO3;
+    li a1, 0;
+    call gpio_select_iof;
+
+    li a0, GPIO4;
+    call gpio_set_as_iof;
+
+    li a0, GPIO4;
+    li a1, 0;
+    call gpio_select_iof;
+
+    li a0, GPIO5;
+    call gpio_set_as_iof;
+
+    li a0, GPIO5;
+    li a1, 0;
+    call gpio_select_iof;
 
     /* set gpio0 high initially and then
     make it low for >3ns to reset D_RESET of Display */
 
     li a0, 1;
-    call FN_gpio_configure_as_output;
+    call gpio_set_as_output;
 
     li a0, GPIO0;
     call gpio_set_high;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xff;
     call delay;
 .endif
@@ -63,7 +91,7 @@ Lalign4 app_entry:
     li a0, GPIO0;
     call gpio_set_low;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xffff;
     call delay;
 .endif
@@ -71,7 +99,7 @@ Lalign4 app_entry:
     li a0, GPIO0;
     call gpio_set_high;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xff;
     call delay;
 .endif
@@ -79,12 +107,12 @@ Lalign4 app_entry:
    /* set gpio1 low for DorC# line to send commands to Display */
 
     li a0, 2;
-    call FN_gpio_configure_as_output;
+    call gpio_set_as_output;
 
     li a0, GPIO1;
     call gpio_set_low;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xff;
     call delay;
 .endif
@@ -102,7 +130,7 @@ oled_on_off_loop:
     li a0, 0xAE; /* display off - sleep mode */
     call spi_transmit;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xfffff;
     call delay;
 .endif
@@ -110,7 +138,7 @@ oled_on_off_loop:
     li a0, 0xAF; /* display on */
     call spi_transmit;
 
-.ifdef NOT_TEST
+.ifdef RUN
     li a0, 0xfffff;
     call delay;
 .endif
