@@ -17,7 +17,17 @@
 .globl app_entry;
 
 .equiv GPIO21, 21
-.equiv RUN, 1
+
+Lalign4 delay: /* value passed in a0 */
+
+Lalign4 delayloop_start:
+
+    beqz a0, delayloop_end;
+    addi a0, a0, -1;
+    j delayloop_start;
+
+Lalign4 delayloop_end:
+ret;
 
 Lalign4 app_entry:
 
@@ -28,63 +38,30 @@ Lalign4 app_entry:
    li a0, GPIO21;
   call gpio_set_as_gpio;
 
+  /* LED off */
+  li a0, GPIO21;
+  call gpio_set_high;
+
   li a0, GPIO21;
   call gpio_set_as_output;
 
-.ifdef TEST
-Lalign4 control_gpio21:
+Lalign4 forever_loop:
 
-      /* LED off */
-    li a0, GPIO21;
-    call gpio_set_high;
-
-    nop;
-    nop;
-
-    /* LED on */
+    /* LED on, since pulled high */
     li a0, GPIO21;
     call gpio_set_low;
 
-  j control_gpio21;
-.endif
-
-.ifdef RUN
-Lalign4 control_gpio21:
+    /* delay */
+    li a0, 0xfffff;
+    call delay;
 
     /* LED off */
     li a0, GPIO21;
     call gpio_set_high;
 
     /* delay */
-    li a0, 0xffffff;
+    li a0, 0xfffff;
+    call delay;
 
-    Lalign4 LB_delayloop_start:
+j forever_loop;
 
-      beqz a0, LB_delayloop_end;
-      addi a0, a0, -1;
-      j LB_delayloop_start;
-  
-    Lalign4 LB_delayloop_end:
-
-    /* LED on */
-    li a0, GPIO21;
-    call gpio_set_low;
-
-    /* delay 2 */
-    li a0, 0xffffff;
-
-    Lalign4 LB_delayloop2_start:
-
-      beqz a0, LB_delayloop2_end;
-      addi a0, a0, -1;
-      j LB_delayloop2_start;
-  
-    Lalign4 LB_delayloop2_end:
-
-  j control_gpio21;
-
-ret;
-
-.endif
-
-Lalign4 _app_entry_end:
