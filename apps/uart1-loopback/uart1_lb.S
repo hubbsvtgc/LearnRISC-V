@@ -9,15 +9,17 @@
 /* rec_addr: .word 0x80004000; */
 
 .section .text
-.global FN_app_entry;
+
+.include "inc/macros.inc";
+
+.global app_entry;
 
 .equiv GPIO18_UART1_TX, 0x00040000
 .equiv GPIO23_UART1_RX, 0x00800000
 
 .equiv UART1_INTERRUPT_SRC, 4
 
-.p2align 2
-FN_app_entry:
+Lalign4 app_entry:
 
     /* Set all interrupt sources to priority 2 */
 
@@ -46,16 +48,16 @@ FN_app_entry:
     /* Configure pins as UART1 TX & RX */
 
     li a0, GPIO18_UART1_TX;
-    call FN_gpio_configure_as_iof;
+    call gpio_set_as_iof;
 
     li a0, GPIO23_UART1_RX;
-    call FN_gpio_configure_as_iof;
+    call gpio_set_as_iof;
 
     li a0, GPIO18_UART1_TX;
-    call FN_gpio_select_iof;
+    call gpio_select_iof;
 
     li a0, GPIO23_UART1_RX;
-    call FN_gpio_select_iof;
+    call gpio_select_iof;
 
     /* Set priority 3 to uart1 interrupt source 4 */
 
