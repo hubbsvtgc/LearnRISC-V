@@ -64,4 +64,3 @@ Lalign4 forever_loop:
     call delay;
 
 j forever_loop;
-

@@ -22,7 +22,7 @@ ENTRY(_start_entry)
 MEMORY
 {
     ram(wxa!ri): ORIGIN = 0x80000000, LENGTH = 0x4000
-    rom        : ORIGIN = 0x20010000, LENGTH = 0x1000000     /* 0x1000000 16MB off-chip */
+    rom        : ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 0x1000000 16MB off-chip */
 }
 
 /* SECTIONS Commmand
