@@ -58,7 +58,6 @@ Lalign4 control_gpio21:
     /* delay */
     li a0, 0xffffff;
 
-
     Lalign4 LB_delayloop_start:
 
       beqz a0, LB_delayloop_end;

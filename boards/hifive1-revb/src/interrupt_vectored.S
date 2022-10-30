@@ -266,7 +266,7 @@ add t1, t1, t0;
 jr t1;  /* j plic_vect_table + interrupt src x 4 */
 
 
-.section .mtvec_table
+.section .text
 Lalign64 trap_base:
 excep_intr_cause0:   j exception_handler; /* Sync exceptions jump to base address */
 
