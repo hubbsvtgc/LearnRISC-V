@@ -7,13 +7,15 @@
  ****************************************************************************/
 
 .section .text
-.global FN_app_entry;
+.global app_entry;
 
-.equiv GPIO18_UART1_TX, 0x00040000
-.equiv GPIO23_UART1_RX, 0x00800000
+.equiv GPIO18, 0x00040000 /* UART1 TX */
+.equiv GPIO23, 0x00800000 /* UART1 RX */
+
+.equiv UART1_INTERRUPT_SRC, 4
 
 .p2align 2
-FN_app_entry:
+app_entry:
 
     /* Set all interrupt sources to priority 2 */
 
@@ -39,11 +41,11 @@ FN_app_entry:
     .p2align 2
     LB_apploop_end:
 
-    li a0, GPIO18_UART1_TX;
-    call FN_gpio_configure_as_iof;
+    li a0, GPIO18;
+    call gpio_set_as_iof;
 
-    li a0, GPIO18_UART1_TX;
-    call FN_gpio_select_iof;
+    li a0, GPIO18;
+    call gpio_select_iof;
 
     /* Set priority 3 to uart1 interrupt source 4 */
     li a0, UART1_INTERRUPT_SRC;

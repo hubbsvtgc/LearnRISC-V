@@ -14,8 +14,8 @@
 
 .global app_entry;
 
-.equiv GPIO18_UART1_TX, 0x00040000
-.equiv GPIO23_UART1_RX, 0x00800000
+.equiv GPIO18, 0x00040000
+.equiv GPIO23, 0x00800000
 
 .equiv UART1_INTERRUPT_SRC, 4
 
@@ -47,16 +47,16 @@ Lalign4 app_entry:
 
     /* Configure pins as UART1 TX & RX */
 
-    li a0, GPIO18_UART1_TX;
+    li a0, GPIO18;
     call gpio_set_as_iof;
 
-    li a0, GPIO23_UART1_RX;
+    li a0, GPIO23;
     call gpio_set_as_iof;
 
-    li a0, GPIO18_UART1_TX;
+    li a0, GPIO18;
     call gpio_select_iof;
 
-    li a0, GPIO23_UART1_RX;
+    li a0, GPIO23;
     call gpio_select_iof;
 
     /* Set priority 3 to uart1 interrupt source 4 */
