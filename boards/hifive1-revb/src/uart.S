@@ -28,8 +28,7 @@
     Input: None
     Output: None */
 
-.p2align 2
-FN_uart1_set_115200:
+Lalign4 FN_uart1_set_115200:
     /* With tlclk at 16Mhz, to achieve 115200 baud,
     divisor should be 138 */
 
@@ -43,8 +42,7 @@ ret;
     Input: a0 - Transmit water mark level value 0-7
     Output: None */
 
-.p2align 2
-FN_uart1_set_txwmark:
+Lalign4 FN_uart1_set_txwmark:
 
     li t0, UART1_BASE;
     lhu t1, UART_TXCTRL_OFFSET+2(t0); /* Read present value */
@@ -59,8 +57,7 @@ ret;
     Input: a0 - Transmit water mark level value 0-7
     Output: None */
 
-.p2align 2
-FN_uart1_set_rxwmark:
+Lalign4 FN_uart1_set_rxwmark:
 
     li t0, UART1_BASE;
     lhu t1, UART_RXCTRL_OFFSET+2(t0); /* Read present value */
@@ -75,8 +72,7 @@ ret;
     Input: a0- can be either 1 (2 stop bits) or 0 (1 stop bit)
     Output: None */
 
-.p2align 2
-FN_uart1_set_stopbits:
+Lalign4 FN_uart1_set_stopbits:
 
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
@@ -91,8 +87,7 @@ ret;
     Input: None
     Output: None */
 
-.p2align 2
-FN_uart1_enable_tx:
+Lalign4 FN_uart1_enable_tx:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -104,8 +99,7 @@ FN_uart1_enable_tx:
 
 ret;
 
-.p2align 2
-FN_uart1_enable_rx:
+Lalign4 FN_uart1_enable_rx:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -120,8 +114,7 @@ ret;
     Input: None
     Output: None */
 
-.p2align 2
-FN_uart1_disable:
+Lalign4 FN_uart1_disable:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -134,8 +127,7 @@ FN_uart1_disable:
 ret;
 
 /* Function to send a byte through UART 1 */
-.p2align 2
-FN_uart1_send_byte:
+Lalign4 FN_uart1_send_byte:
     /* Elementary function to send a byte
      Input: a0 with input byte in [7:0] bits
      Outpu: None */
@@ -146,8 +138,7 @@ FN_uart1_send_byte:
 ret;
 
 /* Function to receive a byte through UART 1 */
-.p2align 2
-FN_uart1_receive_byte:
+Lalign4 FN_uart1_receive_byte:
     /* Elementary function to receive a byte
     Input: None
     Output: a0 with input byte in [7:0] bits */
@@ -161,8 +152,7 @@ ret;
     Input: None
     Output: None */
 
-.p2align 2
-FN_uart1_enable_txwm_intr:
+Lalign4 FN_uart1_enable_txwm_intr:
 
     /* bit[0]: 0 - disable txwm, 1 - enable txwm interrupt */
 
@@ -178,8 +168,7 @@ ret;
    Input: None
    Output: None */
 
-.p2align 2
-FN_uart1_enable_rxwm_intr:
+Lalign4 FN_uart1_enable_rxwm_intr:
 
     /* bit[1]: 0 - disable rxwm, 1 - enable rxwm interrupt */
 
