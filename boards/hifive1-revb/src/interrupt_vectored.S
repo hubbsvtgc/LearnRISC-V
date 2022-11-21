@@ -72,7 +72,9 @@ invalid_src0_ihandler:
 aon_wdog_ihandler:
 aon_rtc_ihandler:
 uart0_ihandler:
+.ifndef UART1_IHANDLER;
 uart1_ihandler:
+.endif
 qspi0_ihandler:
 spi1_ihandler:
 spi2_ihandler:
