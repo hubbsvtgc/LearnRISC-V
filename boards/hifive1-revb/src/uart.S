@@ -12,23 +12,23 @@
 .include "inc/uart.inc"  /** UART register offsets */
 
 /* Make utility functions visible to app */
-.global FN_uart1_set_115200;
-.global FN_uart1_set_txwmark;
-.global FN_uart1_set_rxwmark;
-.global FN_uart1_set_stopbits;
-.global FN_uart1_send_byte;
-.global FN_uart1_receive_byte;
-.global FN_uart1_enable_tx;
-.global FN_uart1_enable_rx;
-.global FN_uart1_disable;
-.global FN_uart1_enable_txwm_intr;
-.global FN_uart1_enable_rxwm_intr;
+.global uart1_set_115200;
+.global uart1_set_txwmark;
+.global uart1_set_rxwmark;
+.global uart1_set_stopbits;
+.global uart1_send_byte;
+.global uart1_receive_byte;
+.global uart1_enable_tx;
+.global uart1_enable_rx;
+.global uart1_disable;
+.global uart1_enable_txwm_intr;
+.global uart1_enable_rxwm_intr;
 
 /* Function to set UART 1 baud rate to 115200
     Input: None
     Output: None */
 
-Lalign4 FN_uart1_set_115200:
+Lalign4 uart1_set_115200:
     /* With tlclk at 16Mhz, to achieve 115200 baud,
     divisor should be 138 */
 
@@ -42,7 +42,7 @@ ret;
     Input: a0 - Transmit water mark level value 0-7
     Output: None */
 
-Lalign4 FN_uart1_set_txwmark:
+Lalign4 uart1_set_txwmark:
 
     li t0, UART1_BASE;
     lhu t1, UART_TXCTRL_OFFSET+2(t0); /* Read present value */
@@ -57,7 +57,7 @@ ret;
     Input: a0 - Transmit water mark level value 0-7
     Output: None */
 
-Lalign4 FN_uart1_set_rxwmark:
+Lalign4 uart1_set_rxwmark:
 
     li t0, UART1_BASE;
     lhu t1, UART_RXCTRL_OFFSET+2(t0); /* Read present value */
@@ -72,7 +72,7 @@ ret;
     Input: a0- can be either 1 (2 stop bits) or 0 (1 stop bit)
     Output: None */
 
-Lalign4 FN_uart1_set_stopbits:
+Lalign4 uart1_set_stopbits:
 
     li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
@@ -87,7 +87,7 @@ ret;
     Input: None
     Output: None */
 
-Lalign4 FN_uart1_enable_tx:
+Lalign4 uart1_enable_tx:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -99,7 +99,7 @@ Lalign4 FN_uart1_enable_tx:
 
 ret;
 
-Lalign4 FN_uart1_enable_rx:
+Lalign4 uart1_enable_rx:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -114,7 +114,7 @@ ret;
     Input: None
     Output: None */
 
-Lalign4 FN_uart1_disable:
+Lalign4 uart1_disable:
 
     /* bit[0]: 0 - disable, 1 - enable */
 
@@ -127,7 +127,7 @@ Lalign4 FN_uart1_disable:
 ret;
 
 /* Function to send a byte through UART 1 */
-Lalign4 FN_uart1_send_byte:
+Lalign4 uart1_send_byte:
     /* Elementary function to send a byte
      Input: a0 with input byte in [7:0] bits
      Outpu: None */
@@ -138,7 +138,7 @@ Lalign4 FN_uart1_send_byte:
 ret;
 
 /* Function to receive a byte through UART 1 */
-Lalign4 FN_uart1_receive_byte:
+Lalign4 uart1_receive_byte:
     /* Elementary function to receive a byte
     Input: None
     Output: a0 with input byte in [7:0] bits */
@@ -152,7 +152,7 @@ ret;
     Input: None
     Output: None */
 
-Lalign4 FN_uart1_enable_txwm_intr:
+Lalign4 uart1_enable_txwm_intr:
 
     /* bit[0]: 0 - disable txwm, 1 - enable txwm interrupt */
 
@@ -168,7 +168,7 @@ ret;
    Input: None
    Output: None */
 
-Lalign4 FN_uart1_enable_rxwm_intr:
+Lalign4 uart1_enable_rxwm_intr:
 
     /* bit[1]: 0 - disable rxwm, 1 - enable rxwm interrupt */
 

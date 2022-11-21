@@ -114,4 +114,3 @@ Lalign4 FN_plic_set_threshold:
     sw a1, 0(t1);
 
 ret;
-

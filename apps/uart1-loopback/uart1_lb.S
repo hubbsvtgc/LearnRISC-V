@@ -76,41 +76,41 @@ Lalign4 app_entry:
     call FN_plic_enable_src;
 
     /* set UART 1 to baud 115200 */
-    call FN_uart1_set_115200;
+    call uart1_set_115200;
 
     /* set UART1 tx water mark to 1 */
     li a0, 1;
-    call FN_uart1_set_txwmark;
+    call uart1_set_txwmark;
 
     /* set UART1 rx water mark to 1 */
     li a0, 1;
-    call FN_uart1_set_rxwmark;
+    call uart1_set_rxwmark;
 
     /* set 2 stop bits */
     li a0, 1;
-    call FN_uart1_set_stopbits; 
+    call uart1_set_stopbits; 
 
     /* Enable uart 1 tx water mark interrupt
-       call FN_uart1_enable_txwm_intr; */
+       call uart1_enable_txwm_intr; */
 
     /* Enable uart 1 rx water mark interrupt*/
-    call FN_uart1_enable_rxwm_intr;
+    call uart1_enable_rxwm_intr;
 
     /* send byte 0xc0 */
     li a0, 0xc0;
-    call FN_uart1_send_byte;
+    call uart1_send_byte;
 
     /* Enable UART 1 Tx*/
-    call FN_uart1_enable_tx;
+    call uart1_enable_tx;
 
     /* Enable UART 1 Rx*/
-    call FN_uart1_enable_rx;
+    call uart1_enable_rx;
 
 .p2align 2
     LB_loop_tx_start:
 
     li a0, 0xbc;
-    call FN_uart1_send_byte;
+    call uart1_send_byte;
     j LB_loop_tx_start;
 
 .p2align 2
