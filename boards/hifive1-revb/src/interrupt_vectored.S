@@ -68,64 +68,55 @@ Lalign4 FN_intr_enable_mexternal:
 Lalign4 default_ihandler:
 mret; /* NOTE: it should be MRET */
 
-invalid_src0_ihandler:
-aon_wdog_ihandler:
-aon_rtc_ihandler:
-uart0_ihandler:
-.ifndef UART1_IHANDLER;
-uart1_ihandler:
+Lalign4 invalid_src0_ihandler:
+Lalign4 aon_wdog_ihandler:
+Lalign4 aon_rtc_ihandler:
+Lalign4 uart0_ihandler:
+.ifdef UART1_DEFAULT_IHANDLER;
+ Lalign4 uart1_ihandler:
 .endif
-qspi0_ihandler:
-spi1_ihandler:
-spi2_ihandler:
-gpio0_ihandler:
-gpio1_ihandler:
-gpio2_ihandler:
-gpio3_ihandler:
-gpio4_ihandler:
-gpio5_ihandler:
-gpio6_ihandler:
-gpio7_ihandler:
-gpio8_ihandler:
-gpio9_ihandler:
-gpio10_ihandler:
-gpio11_ihandler:
-gpio12_ihandler:
-gpio13_ihandler:
-gpio14_ihandler:
-gpio15_ihandler:
-gpio16_ihandler:
-gpio17_ihandler:
-gpio18_ihandler:
-gpio19_ihandler:
-gpio20_ihandler:
-gpio21_ihandler:
-gpio22_ihandler:
-gpio23_ihandler:
-gpio24_ihandler:
-gpio25_ihandler:
-gpio26_ihandler:
-gpio27_ihandler:
-gpio28_ihandler:
-gpio29_ihandler:
-gpio30_ihandler:
-gpio31_ihandler:
-pwm0_ihandler:
-pwm0_ihandler:
-pwm0_ihandler:
-pwm0_ihandler:
-pwm1_ihandler:
-pwm1_ihandler:
-pwm1_ihandler:
-pwm1_ihandler:
-pwm2_ihandler:
-pwm2_ihandler:
-pwm2_ihandler:
-pwm2_ihandler:
-i2c_ihandler:
+Lalign4 qspi0_ihandler:
+Lalign4 spi1_ihandler:
+Lalign4 spi2_ihandler:
+Lalign4 gpio0_ihandler:
+Lalign4 gpio1_ihandler:
+Lalign4 gpio2_ihandler:
+Lalign4 gpio3_ihandler:
+Lalign4 gpio4_ihandler:
+Lalign4 gpio5_ihandler:
+Lalign4 gpio6_ihandler:
+Lalign4 gpio7_ihandler:
+Lalign4 gpio8_ihandler:
+Lalign4 gpio9_ihandler:
+Lalign4 gpio10_ihandler:
+Lalign4 gpio11_ihandler:
+Lalign4 gpio12_ihandler:
+Lalign4 gpio13_ihandler:
+Lalign4 gpio14_ihandler:
+Lalign4 gpio15_ihandler:
+Lalign4 gpio16_ihandler:
+Lalign4 gpio17_ihandler:
+Lalign4 gpio18_ihandler:
+Lalign4 gpio19_ihandler:
+Lalign4 gpio20_ihandler:
+Lalign4 gpio21_ihandler:
+Lalign4 gpio22_ihandler:
+Lalign4 gpio23_ihandler:
+Lalign4 gpio24_ihandler:
+Lalign4 gpio25_ihandler:
+Lalign4 gpio26_ihandler:
+Lalign4 gpio27_ihandler:
+Lalign4 gpio28_ihandler:
+Lalign4 gpio29_ihandler:
+Lalign4 gpio30_ihandler:
+Lalign4 gpio31_ihandler:
+Lalign4 pwm0_ihandler:
+Lalign4 pwm1_ihandler:
+Lalign4 pwm2_ihandler:
+Lalign4 i2c_ihandler:
 
     j default_ihandler;
-
+    nop;
 
 Lalign4 plic_vect_table:
 Lalign4 plic_src0: 
@@ -240,13 +231,14 @@ Lalign4 plic_src51:
 
 Lalign4 plic_src52: 
     j i2c_ihandler;
+    nop;
 
 
 
-exception_handler: /* Synchronous Exception handler */ 
-intr_reserved:  /* SHOULD NOT occur */
-software_m_interrupt: /* Interrupt cause 3, machine sw interrupt */
-timer_m_interrupt: /* Interrupt cause 7, machine timer interrupt */
+Lalign4 exception_handler: /* Synchronous Exception handler */ 
+Lalign4 intr_reserved:  /* SHOULD NOT occur */
+Lalign4 software_m_interrupt: /* Interrupt cause 3, machine sw interrupt */
+Lalign4 timer_m_interrupt: /* Interrupt cause 7, machine timer interrupt */
 mret;
 
 Lalign4 external_m_interrupt: /* Interrupt cause 11, external interrupt */
@@ -272,21 +264,37 @@ jr t1;  /* j plic_vect_table + interrupt src x 4 */
 Lalign64 trap_base:
 excep_intr_cause0:   j exception_handler; /* Sync exceptions jump to base address */
 
-intr_cause1:   j intr_reserved;  /* reserved in fe310-g002 */
-intr_cause2:   j intr_reserved;  /* reserved in fe310-g002 */
+Lalign4 intr_cause1:
+    j intr_reserved;  /* reserved in fe310-g002 */
 
-intr_cause3:   j software_m_interrupt;  /* machine software interrupt */
+Lalign4 intr_cause2:
+    j intr_reserved;  /* reserved in fe310-g002 */
 
-intr_cause4:   j intr_reserved;  /* reserved in fe310-g002 */
-intr_cause5:   j intr_reserved;  /* reserved in fe310-g002 */
-intr_cause6:   j intr_reserved;  /* reserved in fe310-g002 */
+Lalign4 intr_cause3:
+    j software_m_interrupt;  /* machine software interrupt */
 
-intr_cause7:   j timer_m_interrupt;  /* machine timer interrupt */
+Lalign4 intr_cause4:
+    j intr_reserved;  /* reserved in fe310-g002 */
 
-intr_cause8:   j intr_reserved;  /* reserved in fe310-g002 */
-intr_cause9:   j intr_reserved;  /* reserved in fe310-g002 */
-intr_cause10:  j intr_reserved;  /* reserved in fe310-g002 */
+Lalign4 intr_cause5:
+    j intr_reserved;  /* reserved in fe310-g002 */
 
-intr_cause11:  j external_m_interrupt;  /* reserved in fe310-g002 */
+Lalign4 intr_cause6:
+    j intr_reserved;  /* reserved in fe310-g002 */
+
+Lalign4 intr_cause7:
+    j timer_m_interrupt;  /* machine timer interrupt */
+
+Lalign4 intr_cause8:
+    j intr_reserved;  /* reserved in fe310-g002 */
+
+Lalign4 intr_cause9:
+    j intr_reserved;  /* reserved in fe310-g002 */
+
+Lalign4 intr_cause10:
+    j intr_reserved;  /* reserved in fe310-g002 */
+
+Lalign4 intr_cause11:
+    j external_m_interrupt;  /* reserved in fe310-g002 */
 
 .endif
