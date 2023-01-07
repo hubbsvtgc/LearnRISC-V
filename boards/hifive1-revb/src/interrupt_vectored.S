@@ -17,6 +17,7 @@
 
 .globl trap_base;
 .globl FN_intr_enable_mexternal;
+.globl intr_enable_mtimer;
 
 .section .text
 
@@ -49,6 +50,32 @@ Lalign4 FN_intr_enable_mexternal:
     csrr t0, mie;
 
     li t1, MIE_MEIE;
+    or t0, t0, t1;
+
+    csrw mie, t0;
+
+    /* Read MSTATUS csr and set bit 3
+    to enable machine interrupt */
+
+    csrr t0, mstatus;
+
+    li t1, MSTATUS_MIE;
+    or t0, t0, t1;
+
+    csrw mstatus, t0;
+
+ ret;
+
+/* Funtion to enable machine interrupt and
+ * machine external interrupt */
+Lalign4 intr_enable_mtimer:
+
+   /* Read MIE csr and set bit 11 to enable external
+    * interrupt */
+
+    csrr t0, mie;
+
+    li t1, MIE_MTIE;
     or t0, t0, t1;
 
     csrw mie, t0;
@@ -239,6 +266,7 @@ Lalign4 exception_handler: /* Synchronous Exception handler */
 Lalign4 intr_reserved:  /* SHOULD NOT occur */
 Lalign4 software_m_interrupt: /* Interrupt cause 3, machine sw interrupt */
 Lalign4 timer_m_interrupt: /* Interrupt cause 7, machine timer interrupt */
+
 mret;
 
 Lalign4 external_m_interrupt: /* Interrupt cause 11, external interrupt */
@@ -283,7 +311,11 @@ Lalign4 intr_cause6:
     j intr_reserved;  /* reserved in fe310-g002 */
 
 Lalign4 intr_cause7:
-    j timer_m_interrupt;  /* machine timer interrupt */
+.ifdef MTIMER_APP_IHANDLER
+    j timer_m_apphandler;  /* machine timer interrupt */
+.else
+    j timer_m_interrupt ;
+.endif
 
 Lalign4 intr_cause8:
     j intr_reserved;  /* reserved in fe310-g002 */

@@ -14,5 +14,8 @@
 
 .equiv HFCLK_TLCLK, 16000000  /* 16 Mhz is the hfclk at reset */
 
+.equiv UART1_DEFAULT_IHANDLER, 1
+.equiv MTIMER_APP_IHANDLER, 1
+
 .endif
 
