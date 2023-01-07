@@ -6,12 +6,7 @@
  *
  ****************************************************************************/
 
-.ifndef _HIFIVE1_REVB_SRC_INC_CSR_INC_
+.equiv MSIP_OFF, 0x0
+.equiv MTIMECMP_OFF, 0x4000 /* 64 bits register */
+.equiv MTIME_OFF, 0xBFF8 /* 64 bits register */
 
-.equiv _HIFIVE1_REVB_SRC_INC_CSR_INC_, 1
-
-.equiv MIE_MEIE, 0x800 /* Bit 11 */
-.equiv MSTATUS_MIE, 0x8 /* Bit 3 */
-.equiv MIE_MTIE, 0x80 /* Bit 7 */
-
-.endif

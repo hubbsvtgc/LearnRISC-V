@@ -38,7 +38,7 @@ set_asembler ()
 {
 # GAS (GNU Assembler)
     GNU_AS=riscv64-unknown-elf-as
-    GNU_AS_FLAGS="-march=rv32imac -mno-arch-attr -I ../rv-spec/ -I ../boards/${BOARD}/src"
+    GNU_AS_FLAGS="-march=rv32ima -mno-arch-attr -I ../rv-spec/ -I ../boards/${BOARD}/src"
     GNU_AS_OUTPUT_EXT=.o 
 }
 
