@@ -12,14 +12,14 @@
 
 .include "inc/macros.inc";
 
-.global app_entry;
+.global uart_tx_init;
 
 .equiv GPIO18, 0x00040000
 .equiv GPIO23, 0x00800000
 
 .equiv UART1_INTERRUPT_SRC, 4
 
-Lalign4 app_entry:
+Lalign4 uart_tx_init:
 
     /* Set all interrupt sources to priority 2 */
 
@@ -105,13 +105,12 @@ Lalign4 app_entry:
 
     /* Enable UART 1 Rx*/
     call uart1_enable_rx;
+Lalign4 uart_tx_init_end:
+ret;
 
-.p2align 2
-    LB_loop_tx_start:
-
+nop;
+Lalign4 uart_tx_loop_start:
     li a0, 0xbc;
     call uart1_send_byte;
-    j LB_loop_tx_start;
-
-.p2align 2
-    LB_loop_tx_end:
+    j uart_tx_loop_start;
+Lalign4 uart_tx_loop_end:
