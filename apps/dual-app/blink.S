@@ -14,11 +14,11 @@
 
 .include "inc/macros.inc";
 
-.globl app_entry;
+.globl blink_init;
 
 .equiv GPIO21, 21
 
-Lalign4 app_entry:
+Lalign4 blink_init:
 
   /* Disable interrupt */
   csrw mie, 0;
@@ -33,9 +33,10 @@ Lalign4 app_entry:
 
   li a0, GPIO21;
   call gpio_set_as_output;
+ret;
 
-Lalign4 forever_loop:
-
+nop;
+Lalign4 blink_forever_loop:
     /* LED on, since pulled high */
     li a0, GPIO21;
     call gpio_set_low;
@@ -60,4 +61,4 @@ Lalign4 offdelayloop_start:
     j offdelayloop_start;
 Lalign4 offdelayloop_end:
 
-j forever_loop;
+j blink_forever_loop;
