@@ -36,7 +36,7 @@ Lalign4 blink_init:
 ret;
 
 nop;
-Lalign4 blink_forever_loop:
+Lalign4 blink_loop:
     /* LED on, since pulled high */
     li a0, GPIO21;
     call gpio_set_low;
@@ -46,7 +46,7 @@ Lalign4 blink_forever_loop:
 Lalign4 ondelayloop_start:
     beqz t0, ondelayloop_end;
     addi t0, t0, -1;
-    j delayloop_start;
+    j ondelayloop_start;
 Lalign4 ondelayloop_end:
 
     /* LED off */
@@ -56,9 +56,9 @@ Lalign4 ondelayloop_end:
     /* LED off delay */
     li t0, 0xfffff;
 Lalign4 offdelayloop_start:
-    beqz t0, delayloop_end;
+    beqz t0, offdelayloop_end;
     addi t0, t0, -1;
     j offdelayloop_start;
 Lalign4 offdelayloop_end:
 
-j blink_forever_loop;
+j blink_loop;

@@ -18,10 +18,10 @@
 .equiv FIVE_SEC, 0x28000 /* 32768 * 5 in hex */
 .equiv ONE_MIN, 0x1E0000 /* 32768 * 60 in hex */
 
-.globl app_entry;
+.globl timer_init;
 .globl timer_m_apphandler;
 
-Lalign4 app_entry:
+Lalign4 timer_init:
     nop;
     nop;
 
@@ -44,8 +44,9 @@ Lalign4 app_entry:
     li t2, FIVE_SEC;
     sw t2, 0(t0);
     sw zero, 4(t0); /* 64 bits register */
-
-    j . 
+Lalign4 timer_init_end:
+ret;
+/*    j .  */
 
 timer_m_apphandler:
     nop;
