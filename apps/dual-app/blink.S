@@ -18,17 +18,6 @@
 
 .equiv GPIO21, 21
 
-Lalign4 delay: /* value passed in a0 */
-
-Lalign4 delayloop_start:
-
-    beqz a0, delayloop_end;
-    addi a0, a0, -1;
-    j delayloop_start;
-
-Lalign4 delayloop_end:
-ret;
-
 Lalign4 app_entry:
 
   /* Disable interrupt */
@@ -51,16 +40,24 @@ Lalign4 forever_loop:
     li a0, GPIO21;
     call gpio_set_low;
 
-    /* delay */
-    li a0, 0xfffff;
-    call delay;
+    /* LED ON delay */
+    li t0, 0xfffff;
+Lalign4 ondelayloop_start:
+    beqz t0, ondelayloop_end;
+    addi t0, t0, -1;
+    j delayloop_start;
+Lalign4 ondelayloop_end:
 
     /* LED off */
     li a0, GPIO21;
     call gpio_set_high;
 
-    /* delay */
-    li a0, 0xfffff;
-    call delay;
+    /* LED off delay */
+    li t0, 0xfffff;
+Lalign4 offdelayloop_start:
+    beqz t0, delayloop_end;
+    addi t0, t0, -1;
+    j offdelayloop_start;
+Lalign4 offdelayloop_end:
 
 j forever_loop;
