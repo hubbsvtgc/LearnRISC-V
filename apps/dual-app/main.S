@@ -46,9 +46,13 @@ Lalign4 app_entry:
     sw t2, 0(t0);
     sw zero, 4(t0); /* 64 bits register */
 
+    /* Flag to switch apps in m handler */
+    li s0, 0;
+
 j .
 
-
 timer_m_apphandler:
+
     nop;
+    j blink_loop;
 mret;
