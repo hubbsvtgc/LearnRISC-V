@@ -17,8 +17,8 @@
 
 .globl blink_init;
 
-.equiv GPIO21_BPOS_ON, 0x00100000
-.equiv GPIO21_BPOS_OFF,0xFF7FFFFF
+.equiv GPIO21_BPOS_ON, 0x00200000
+.equiv GPIO21_BPOS_OFF,0xFFDFFFFF
 
 Lalign4 blink_init:
 
