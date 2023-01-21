@@ -9,9 +9,10 @@
 .section .text
 
 .include "inc/macros.inc";
+.include "inc/uart.inc";
+.include "inc/mmap.inc";
 
 .equiv GPIO18, 0x00040000 /*UART1 Tx */
-.equiv UART1_INTERRUPT_SRC, 4
 
 .global uart_tx_init;
 

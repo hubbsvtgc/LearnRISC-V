@@ -13,15 +13,14 @@
 .section .text
 
 .include "inc/macros.inc";
+.include "inc/gpio.inc";
 
 .globl blink_init;
 
-.equiv GPIO21, 21
+.equiv GPIO21_BPOS_ON, 0x00100000 
+.equiv GPIO21_BPOS_OFF, 0xFF7FFFF
 
 Lalign4 blink_init:
-
-  /* Disable interrupt */
-  csrw mie, 0;
 
   /* Configure pin 21 as gpio */
    li a0, GPIO21;
@@ -62,3 +61,11 @@ Lalign4 offdelayloop_start:
 Lalign4 offdelayloop_end:
 
 j blink_loop;
+
+
+    li t0, GPIO_BASE;
+    lw t1, GPIO_OUT_VALUE_OFF(t0);
+    and a0, t1, a0;
+
+    sw a0, GPIO_OUT_VALUE_OFF(t0);
+    
