@@ -62,6 +62,11 @@ Lalign4 _start_entry:
 
     csrw mtvec, t0;
 
+    /* disable all interrupts */
+
+    csrw mstatus, zero;
+    csrw mie, zero;
+
     call app_entry; /* This is the entry point for app */
 
 j .
