@@ -44,7 +44,10 @@ ret;
 
 nop;
 Lalign4 uart_tx_loop_start:
+
     li a0, 0xbc;
-    call uart1_send_byte;
+    li t0, UART1_BASE;
+    sw a0, UART_TXDATA_OFFSET(t0);
     j uart_tx_loop_start;
+
 Lalign4 uart_tx_loop_end:
