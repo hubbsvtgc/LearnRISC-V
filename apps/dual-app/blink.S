@@ -16,6 +16,7 @@
 .include "inc/gpio.inc";
 
 .globl blink_init;
+.globl blink_loop;
 
 .equiv GPIO21_BPOS_ON, 0x00200000
 .equiv GPIO21_BPOS_OFF,0xFFDFFFFF
