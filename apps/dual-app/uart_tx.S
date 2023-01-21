@@ -15,6 +15,7 @@
 
 
 .global uart_tx_init;
+.global uart_tx_loop_start;
 
 Lalign4 uart_tx_init:
 
@@ -67,7 +68,7 @@ ret;
 
 nop;
 Lalign4 uart_tx_loop_start:
-
+    nop;
     li a0, 0xbc;
     li t0, UART0_BASE;
     sw a0, UART_TXDATA_OFFSET(t0);
