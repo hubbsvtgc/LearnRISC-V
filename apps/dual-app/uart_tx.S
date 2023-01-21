@@ -18,6 +18,9 @@
 
 Lalign4 uart_tx_init:
 
+  addi sp, sp, -4;
+  sw ra, 0(sp);
+
     /* Configure GPIO17 as UART0 TX */
 
     li a0, GPIO17;
@@ -55,6 +58,9 @@ Lalign4 uart_tx_init:
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
     ori t1, t1, 1;
     sw t1, UART_TXCTRL_OFFSET(t0); /* Enable */
+
+    lw ra, 0(sp);
+    addi sp, sp, 4;
 
 Lalign4 uart_tx_init_end:
 ret;

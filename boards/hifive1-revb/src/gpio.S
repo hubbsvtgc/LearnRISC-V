@@ -56,13 +56,15 @@ ret;
 
 Lalign4 gpio_set_as_input:
 
-      sw ra, 0(sp);
+    addi sp, sp, -4;
+    sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
     /* Generate the mask */
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Perform bitwise OR operation */
     li t0, GPIO_BASE;
@@ -77,6 +79,7 @@ ret;
 
 Lalign4 gpio_set_as_output:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -84,6 +87,7 @@ Lalign4 gpio_set_as_output:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Perform bitwise OR operation */
     li t0, GPIO_BASE;
@@ -98,6 +102,7 @@ ret;
 
 Lalign4 gpio_set_as_iof:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -105,6 +110,7 @@ Lalign4 gpio_set_as_iof:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Perform bitwise OR operation */
     li t0, GPIO_BASE;
@@ -121,6 +127,7 @@ ret;
 
 Lalign4 gpio_select_iof:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -128,6 +135,7 @@ Lalign4 gpio_select_iof:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Read existing value */
     li t0, GPIO_BASE;
@@ -218,6 +226,7 @@ ret;
 /* Configure as gpio */
 Lalign4 gpio_set_as_gpio:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -225,6 +234,7 @@ Lalign4 gpio_set_as_gpio:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Invert the mask */
     not a0, a0;
@@ -240,6 +250,7 @@ ret;
 
 Lalign4 gpio_set_high:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -247,6 +258,7 @@ Lalign4 gpio_set_high:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Perform bitwise OR operation */
     li t0, GPIO_BASE;
@@ -259,6 +271,7 @@ ret;
 
 Lalign4 gpio_set_low:
 
+    addi sp, sp, -4;
     sw ra, 0(sp);
 
     /* Register A0 has the gpio pin number */
@@ -266,6 +279,7 @@ Lalign4 gpio_set_low:
     call gpio_generate_mask;
 
     lw ra, 0(sp);
+    addi sp, sp, 4;
 
     /* Invert the mask */
     not a0, a0;

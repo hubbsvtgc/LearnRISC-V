@@ -22,16 +22,22 @@
 
 Lalign4 blink_init:
 
-  /* Configure pin 21 as gpio */
-   li a0, GPIO21;
-  call gpio_set_as_gpio;
+    addi sp, sp, -4;
+    sw ra, 0(sp);
 
-  /* LED off */
-  li a0, GPIO21;
-  call gpio_set_high;
+    /* Configure pin 21 as gpio */
+    li a0, GPIO21;
+    call gpio_set_as_gpio;
 
-  li a0, GPIO21;
-  call gpio_set_as_output;
+    /* LED off */
+    li a0, GPIO21;
+    call gpio_set_high;
+
+    li a0, GPIO21;
+    call gpio_set_as_output;
+
+    lw ra, 0(sp);
+    addi sp, sp, 4;
 ret;
 
 nop;
