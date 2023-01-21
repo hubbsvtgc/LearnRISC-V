@@ -36,14 +36,14 @@
 .equiv GPIO13, 13
 .equiv GPIO14, 14
 .equiv GPIO15, 15
-.equiv GPIO16, 16
-.equiv GPIO17, 17
-.equiv GPIO18, 18
+.equiv GPIO16, 16   /*UART0 Rx */
+.equiv GPIO17, 17   /*UART0 Tx */
+.equiv GPIO18, 18   /*UART1 Tx */
 .equiv GPIO19, 19
 .equiv GPIO20, 20
 .equiv GPIO21, 21
 .equiv GPIO22, 22
-.equiv GPIO23, 23
+.equiv GPIO23, 23    /*UART1 Rx */
 .equiv GPIO24, 24
 .equiv GPIO25, 25
 .equiv GPIO26, 26
