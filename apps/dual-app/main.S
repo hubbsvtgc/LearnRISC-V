@@ -1,6 +1,7 @@
 .include "inc/macros.inc";
 .include "inc/mmap.inc";
 .include "inc/clint.inc";
+.include "inc/csr.inc";
 
 /* Mtimer is counted by rtclk, which is 32.768 khz */
 
@@ -14,11 +15,19 @@
 Lalign4 app_entry:
 
     nop;
+
     call blink_init;
     nop;
     call uart_tx_init;
     nop;
-    call intr_enable_mtimer;
+
+    /* Enable Machine Timer Interrupt */
+
+    li t0, MIE_MTIE;
+    csrw mie, t0;
+
+    li t0, MSTATUS_MIE;
+    csrw mstatus, t0;
 
     /* Clear mtime */
 
