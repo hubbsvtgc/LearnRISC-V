@@ -54,5 +54,25 @@ j .
 timer_m_apphandler:
 
     nop;
-    j blink_loop;
+
+    /* Set timer interrupt duration */
+    li t0, CLINT_BASE;
+    li t1, MTIMECMP_OFF;
+    add t0, t0, t1;
+    lw t2, 0(t0);
+    li t3, FIVE_SEC;
+    add t2, t2, t3;
+    sw t2, 0(t0);
+    sw zero, 4(t0); /* 64 bits register */
+
+bnez s0, j_uart;
+    la t0, blink_loop;
+    csrw mepc, t0;
+    addi s0, s0, 1;
+mret;
+j_uart:
+    nop;
+    la t0, uart_tx_loop_start;
+    csrw mepc, t0;
+    addi s0, s0, -1;
 mret;
