@@ -1,7 +1,7 @@
 
 /****************************************************************************
  *
- *   Copyright (C) 2022 bsvtgc@gmail.com. All rights reserved.
+ *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
  *   Author: Vincent <bsvtgc@gmail.com>
  *
  ****************************************************************************/
@@ -11,8 +11,7 @@
 .include "inc/macros.inc";
 .include "inc/uart.inc";
 .include "inc/mmap.inc";
-.include "inc/gpio.inc"; /* .equiv GPIO17, 17   --UART0 Tx */
-
+.include "inc/gpio.inc"; /* .equiv GPIO18, 18   --UART1 Tx */
 
 .global uart_tx_init;
 .global uart_tx_loop_start;
@@ -22,25 +21,25 @@ Lalign4 uart_tx_init:
   addi sp, sp, -4;
   sw ra, 0(sp);
 
-    /* Configure GPIO17 as UART0 TX */
+    /* Configure GPIO18 as UART1 TX */
 
-    li a0, GPIO17;
+    li a0, GPIO18;
     call gpio_set_as_iof;
 
-    li a0, GPIO17;
+    li a0, GPIO18;
     call gpio_select_iof;
 
-    /* set UART 0 to baud 115200
+    /* set UART 1 to baud 115200
     With tlclk at 16Mhz, to achieve 115200 baud,
     divisor should be 138 */
 
-    li t0, UART0_BASE;
+    li t0, UART1_BASE;
     li t1, 138;
     sw t1, UART_BAUD_DIV_OFFSET(t0);
 
     /* set 2 stop bits */
     li a0, 1;
-    li t0, UART0_BASE;
+    li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
 
     slli a0, a0, 1;  /* shift input to stop bit position */
@@ -49,13 +48,13 @@ Lalign4 uart_tx_init:
 
     /* send byte 0xc0 */
     li a0, 0xc0;
-    li t0, UART0_BASE;
+    li t0, UART1_BASE;
     sw a0, UART_TXDATA_OFFSET(t0);
 
-    /* Enable UART 0 Tx
+    /* Enable UART 1 Tx
       bit[0]: 0 - disable, 1 - enable */
 
-    li t0, UART0_BASE;
+    li t0, UART1_BASE;
     lw t1, UART_TXCTRL_OFFSET(t0); /* Read present value */
     ori t1, t1, 1;
     sw t1, UART_TXCTRL_OFFSET(t0); /* Enable */
@@ -70,7 +69,7 @@ nop;
 Lalign4 uart_tx_loop_start:
     nop;
     li a0, 0xbc;
-    li t0, UART0_BASE;
+    li t0, UART1_BASE;
     sw a0, UART_TXDATA_OFFSET(t0);
     j uart_tx_loop_start;
 
