@@ -26,7 +26,8 @@ Lalign4 uart_tx_init:
     li a0, GPIO18;
     call gpio_set_as_iof;
 
-    li a0, GPIO18;
+    li a0, GPIO18; /* Pin number */
+    li a1, 0; /* Select 0 - UART 1 -tx */
     call gpio_select_iof;
 
     /* set UART 1 to baud 115200
@@ -68,9 +69,12 @@ ret;
 nop;
 Lalign4 uart_tx_loop_start:
     nop;
-    li a0, 0xbc;
+    li a0, 0x41; /* A */
     li t0, UART1_BASE;
     sw a0, UART_TXDATA_OFFSET(t0);
-    j uart_tx_loop_start;
 
+    /* j uart_tx_loop_start; */
+
+    j .
+nop;
 Lalign4 uart_tx_loop_end:
