@@ -47,6 +47,14 @@ Lalign4 uart_tx_init:
     or t1, t1, a0;   /* set stop bit count */
     sw t1, UART_TXCTRL_OFFSET(t0); /* Store back */
 
+    /* Set tx wmark to 6 */
+    li a0, 6;
+    li t0, UART1_BASE;
+    lhu t1, UART_TXCTRL_OFFSET+2(t0); /* Read present value */
+    andi t1, t1, -8;
+    or t1, t1, a0;
+    sh t1, UART_TXCTRL_OFFSET+2(t0); /* Set wmark */
+
     /* send byte 0xc0 */
     li a0, 0xc0;
     li t0, UART1_BASE;
@@ -68,13 +76,20 @@ ret;
 
 nop;
 Lalign4 uart_tx_loop_start:
-    nop;
-    li a0, 0x41; /* A */
-    li t0, UART1_BASE;
-    sw a0, UART_TXDATA_OFFSET(t0);
 
-    /* j uart_tx_loop_start; */
+  nop;
+  li t0, UART1_BASE;
 
-    j .
+  wait_full:
+  lw t1, UART_TXDATA_OFFSET(t0);
+  slli t1, t1, 31 # TXDATA_FIFO_FULL;
+  bnez t1, wait_full;
+
+  li a0, 0x41; /* A */
+  
+  sb a0, UART_TXDATA_OFFSET(t0);
+
+j uart_tx_loop_start;
+
 nop;
 Lalign4 uart_tx_loop_end:
