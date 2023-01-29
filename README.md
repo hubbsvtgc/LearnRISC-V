@@ -1,5 +1,6 @@
 # Welcome to LearnRISC-V Repository
 
+This code is discussed in YouTube: https://www.youtube.com/@LearnRISCV
 
 **Table of Contents:**
 
