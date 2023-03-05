@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (C) 2022 bsvtgc@gmail.com. All rights reserved.
+ *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
  *   Author: Vincent <bsvtgc@gmail.com>
  *
  ****************************************************************************/
