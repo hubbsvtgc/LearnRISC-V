@@ -64,7 +64,7 @@ Lalign4 _start_entry:
 
     /* disable all interrupts */
 
-    csrw mstatus, zero;
+    # csrw mstatus, zero;
     csrw mie, zero;
 
     j app_entry; /* Should this be a jump or call? - entry point for app */
