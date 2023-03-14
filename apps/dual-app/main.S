@@ -1,3 +1,11 @@
+
+/****************************************************************************
+ *
+ *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
+ *   Author: Vincent <bsvtgc@gmail.com>
+ *
+ ****************************************************************************/
+
 .include "inc/macros.inc";
 .include "inc/mmap.inc";
 .include "inc/clint.inc";
@@ -9,7 +17,7 @@
 .equiv FIVE_SEC, 0x28000 /* 32768 * 5 in hex */
 .equiv ONE_MIN, 0x1E0000 /* 32768 * 60 in hex */
 
-.globl timer_m_apphandler;
+.globl timer_m_apphandler; # Enable MTIMER_APP_IHANDLER in config.inc
 .globl app_entry;
 
 Lalign4 app_entry:
