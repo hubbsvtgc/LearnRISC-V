@@ -30,7 +30,20 @@ memory mapped Mask ROM (jumps to memory mapped OTP)
 
 0x20000:
 memory mapped OTP
-Run low level init and jump to QSPI location 0x20010000
+As shipped, the OTP memory at the boot location is preprogrammed to
+jump immediately to the end of the OTP memory, which contains the
+following code to jump to the beginning of the SPI-Flash at 0x2000 0000:
+
+fence 0,0
+li t0, 0x20000000
+jr t0
+
+fence 0,0 is encoded as 0x0000 000F, and the instruction
+may be modified by burning additional bits to transform
+it into a JAL instruction ( opcode 0x6F ) to execute arbitrary
+code rather than jumping directly to the beginning of the SPI-Flash.
+
+Thus, at power-up, program execution will jump essentially jump to 0x2000_0000,
 
 Right now, this is code in a way to be loaded into RAM and
 undergo controlled execution through gdb. */
