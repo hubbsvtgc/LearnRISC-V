@@ -263,6 +263,9 @@ Lalign4 plic_src52:
 
 
 Lalign4 exception_handler: /* Synchronous Exception handler */ 
+    /* Do somehting to handle ecall if ecall */
+    nop;
+
 Lalign4 intr_reserved:  /* SHOULD NOT occur */
 Lalign4 software_m_interrupt: /* Interrupt cause 3, machine sw interrupt */
 Lalign4 timer_m_interrupt: /* Interrupt cause 7, machine timer interrupt */
