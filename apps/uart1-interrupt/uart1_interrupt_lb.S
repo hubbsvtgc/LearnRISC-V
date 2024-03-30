@@ -79,8 +79,6 @@ Lalign4 app_entry:
     li a1, 2; /* All interrupts upto priority 2 would be masked */
     call FN_plic_set_threshold;
 
-
-
     /* set source enable bits in PLIC */
     li a0, UART1_INTERRUPT_SRC;
     call FN_plic_enable_src;
@@ -113,8 +111,8 @@ Lalign4 app_entry:
     /* Enable UART 1 Tx*/
     call uart1_enable_tx;
 
-    /* Enable UART 1 Rx */
-    call uart1_enable_rx; 
+    /* Enable UART 1 Rx 
+    call uart1_enable_rx;  */
 
     /* Enable external interrupt */
     call FN_intr_enable_mexternal; 
@@ -173,9 +171,9 @@ Lalign4 uart1_rx_:
 
 Lalign4 uart1_txrx_end:
 
-    csrr t0, mstatus;
-    ori t0, t0, 8;
-    csrw mstatus, t0;
+   /* csrr t0, mstatus;
+     ori t0, t0, 8;
+     csrw mstatus, t0; */
 
     addi sp, sp, -16;
     lw ra, 0(sp);
