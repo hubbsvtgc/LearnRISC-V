@@ -23,6 +23,13 @@
 
 Lalign4 app_entry:
 
+    li t2, 0x80003000; /* Addr to store value */
+    li a0, 0x0;
+    sw a0, 0(t2);
+
+    li a0, 10
+    sb a0, 0(t2);  /* Start sending 10 down to 0 here in uart1 interrupt hanlder */
+
     /* Set all interrupt sources to priority 2 */
 
     li a0, 52; /* Max source id */
@@ -153,8 +160,12 @@ Lalign4 uart1_tx_:
     lw a0, UART_TXDATA_OFFSET(t1); 
     srli a0, a0, 31;
     bnez a0, tx_fifo_full; /* check bit 31 */
-    li a0, 0xf0;
+    li t2, 0x80003000;
+    lb a0, 0(t2);
+    beqz a0, uart1_txrx_end /* if transmitted all 10 */
     sb a0, UART_TXDATA_OFFSET(t1); /* Uart1 tx pending bit is cleared if enqued upto wmark */
+    addi a0, a0, -1;
+    sb a0, 0(t2);
     j start_transmitting;
     nop;
     tx_fifo_full:
