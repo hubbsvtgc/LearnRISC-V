@@ -52,17 +52,17 @@ undergo controlled execution through gdb. */
 .include "inc/macros.inc"  /** Assembly macros */
 
 .extern linker_stack_start; /* From linker script */
-.globl _start_entry; /* To be visible to linker */
+.globl __boot_; /* To be visible to linker */
 .extern trap_base;
 
-.section .start_entry
+.section .boot
 
-Lalign4 _start_entry:
+Lalign4 __boot_:
 
     /* set stack pointer */
 
-    lui sp, %hi(linker_stack_start);
-    addi sp, sp, %lo(linker_stack_start);
+    lui sp, %hi(__stack_start_);
+    addi sp, sp, %lo(__stack_start_);
 
     /* set trap vector base with vector mode */
 

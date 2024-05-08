@@ -1,71 +1,58 @@
 /****************************************************************************
  *
- *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
+ *   Copyright (C) 2024 bsvtgc@gmail.com. All rights reserved.
  *   Author: Vincent <bsvtgc@gmail.com>
  *
  ****************************************************************************/
 
-
-/* Comments here */
-
-OUTPUT_ARCH("riscv")
-
-/* Entry point */
-
-ENTRY(_start_entry)
-
-/* Memory Layout */
+ENTRY(__boot_)
 
 MEMORY
 {
-    ram(wxa!ri): ORIGIN = 0x80000000, LENGTH = 0x4000
-    rom : ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 16MB */
+    ON_CHIP_DTIM(wxa): ORIGIN = 0x80000000, LENGTH = 0x4000 /* E31 DTIM 16KiB */
+    OFF_CHIP_FLASH (wxa): ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 16MiB */
 }
-
-/* SECTIONS Commmand 
-SECTIONS { ...
-  secname : {  
-    contents
-  }
-... }
-In above, secname is the output section name, content is the 
-content that goes into the section. The output section 
-would be created only if there is any content. 
 
 SECTIONS
 {
-  . = 0x10000;
-  .text : { *(.text) }
-  . = 0x8000000;
-  .data : { *(.data) }
-  .bss : { *(.bss) }
-  _etext = .;
+  .text : {
+    PROVIDE(__text_start_ = .);
+    KEEP(*(.boot)) /* While boot from flash, this should be at 0x2000_0000 */
+    *(.text.init) *(.text .text.*)
+    PROVIDE(__text_end_ = .);
+  } > ON_CHIP_DTIM
+
+  . = ALIGN(4);
+
+  .rodata : {
+    PROVIDE(__rodata_start_ = .);
+     *(.rodata .rodata.*)
+    PROVIDE(__rodata_end_ = .);
+  } > ON_CHIP_DTIM
+
+  . = ALIGN(4);
+
+  .data : {
+    PROVIDE(__data_start_ = .);
+    *(.data .data.*)
+    PROVIDE(__data_end_ = .);
+  } > ON_CHIP_DTIM
+
+  . = ALIGN(4);
+
+  .bss : {
+    PROVIDE(_bss_start_ = .);
+    *(.sbss .sbss.*) *(.bss .bss.*)
+    PROVIDE(_bss_end_ = .);
+  } > ON_CHIP_DTIM
+
+  . = ALIGN(4);
+
+  PROVIDE(__stack_start_ = .);
+  PROVIDE(__stack_end_ = _stack_start_ + 1024);
+  PROVIDE(__memory_end_ = 0x80003FFF);
 }
-You write the `SECTIONS' command as the keyword `SECTIONS',
-followed by a series of symbol assignments and output section descriptions enclosed in curly braces.
 
-The symbol `_etext' will be defined as the address following the last `.bss' input section
-*/
-
-SECTIONS
-{
-    .text :  /* GAS dont accept .code section */
-    {
-        KEEP(*(.start_entry)) /* WARNING: Make sure .start_entry is mapped into RAM */
-        KEEP(*(.mtvec_table))
-        *(.text*)
-    }
-    > ram
-    . = ALIGN(4);
-
-    .data :
-    {
-        *(.data*)
-    }
-    > ram
-    . = ALIGN(4);
-
-    /* Set Stack after code & data */
-    linker_stack_start = .;
-}
-
+/* Reference Link:
+https://users.informatik.haw-hamburg.de/~krabat/FH-Labor/gnupro/5_GNUPro_Utilities/c_Using_LD/ld.html
+ */

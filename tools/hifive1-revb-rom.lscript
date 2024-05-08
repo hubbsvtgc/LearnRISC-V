@@ -1,76 +1,57 @@
 /****************************************************************************
  *
- *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
+ *   Copyright (C) 2024 bsvtgc@gmail.com. All rights reserved.
  *   Author: Vincent <bsvtgc@gmail.com>
  *
  ****************************************************************************/
 
-
-/* Comments here */
-
-OUTPUT_ARCH("riscv")
-
-/* Entry point */
-
-ENTRY(_start_entry)
-
-/* Memory Layout */
-
-/*Flash memory on E31 range 0x2000_0000 - 0x3FFF_FFFF, LENGHT = 0x20000000 
-- 512MB max support for off-chip flash */
+ENTRY(__boot_)
 
 MEMORY
 {
-    ram(wxa!ri): ORIGIN = 0x80000000, LENGTH = 0x4000
-    rom        : ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 0x1000000 16MB off-chip */
+    ON_CHIP_DTIM(wxa): ORIGIN = 0x80000000, LENGTH = 0x4000 /* E31 DTIM 16KiB */
+    OFF_CHIP_FLASH (wxa): ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 16MiB */
 }
-
-/* SECTIONS Commmand
-SECTIONS { ...
-  secname : {  
-    contents
-  }
-... }
-In above, secname is the output section name, content is the 
-content that goes into the section. The output section 
-would be created only if there is any content. 
 
 SECTIONS
 {
-  . = 0x10000;
-  .text : { *(.text) }
-  . = 0x8000000;
-  .data : { *(.data) }
-  .bss : { *(.bss) }
-  _etext = .;
+  .text : {
+    PROVIDE(__text_start_ = .);
+    KEEP(*(.boot)) /* While boot from flash, this should be at 0x2000_0000 */
+    *(.text.init) *(.text .text.*)
+    PROVIDE(__text_end_ = .);
+  } > OFF_CHIP_FLASH
+
+  . = ALIGN(4);
+
+  .rodata : {
+    PROVIDE(__rodata_start_ = .);
+     *(.rodata .rodata.*)
+    PROVIDE(__rodata_end_ = .);
+  } > OFF_CHIP_FLASH
+
+  . = ALIGN(4);
+
+  .data : {
+    PROVIDE(__data_start_ = .);
+    *(.data .data.*)
+    PROVIDE(__data_end_ = .);
+  } > OFF_CHIP_FLASH
+
+  . = ALIGN(4);
+
+  .bss : {
+    PROVIDE(_bss_start_ = .);
+    *(.sbss .sbss.*) *(.bss .bss.*)
+    PROVIDE(_bss_end_ = .);
+  } > OFF_CHIP_FLASH
+
+  . = ALIGN(4);
+
+  PROVIDE(__stack_start_ = ORIGIN(ON_CHIP_DTIM)); /* Stack to RAM */
+  PROVIDE(__stack_end_ = _stack_start_ + 1024);
 }
-You write the `SECTIONS' command as the keyword `SECTIONS',
-followed by a series of symbol assignments and output section descriptions enclosed in curly braces.
 
-The symbol `_etext' will be defined as the address following the last `.bss' input section
-*/
-
-SECTIONS
-{
-    .text :  /* GAS dont accept .code section */
-    {
-        KEEP(*(.start_entry))
-        KEEP(*(.mtvec_table))
-        *(.text*)
-    }
-    > rom
-    . = ALIGN(4);
-
-    .data :
-    {
-        *(.data*)
-    }
-    > rom
-    . = ALIGN(4);
-
-  . = 0x80002000; /* Its set at 0x80002000 ( instead of 0x80000000) to use it for RUST */
-
-    /* Set Stack in RAM */
-    linker_stack_start = .;
-}
-
+/* Reference Link:
+https://users.informatik.haw-hamburg.de/~krabat/FH-Labor/gnupro/5_GNUPro_Utilities/c_Using_LD/ld.html
+ */
