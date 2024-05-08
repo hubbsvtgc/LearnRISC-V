@@ -48,8 +48,8 @@ SECTIONS
 
   . = ALIGN(4);
 
-  PROVIDE(__stack_start_ = ORIGIN(ON_CHIP_DTIM)); /* Stack to RAM */
-  PROVIDE(__stack_end_ = _stack_start_ + 1024);
+  PROVIDE(__stack_start_ = ORIGIN(ON_CHIP_DTIM) + 1024); /* Stack on RAM with 1024 depth*/
+
 }
 
 /* Reference Link:
