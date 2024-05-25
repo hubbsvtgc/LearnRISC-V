@@ -51,7 +51,7 @@ undergo controlled execution through gdb. */
 .include "inc/config.inc"  /** Build Configuration */
 .include "inc/macros.inc"  /** Assembly macros */
 
-.extern linker_stack_start; /* From linker script */
+/* .extern __stack_start_; From linker script */
 .globl __boot_; /* To be visible to linker */
 .extern trap_base;
 
@@ -59,13 +59,14 @@ undergo controlled execution through gdb. */
 
 Lalign4 __boot_:
 
-    /* set stack pointer */
+    # Disable interrupts while we set boot code
+    csrw mie, zero;
 
+    /* set stack pointer */
     lui sp, %hi(__stack_start_);
     addi sp, sp, %lo(__stack_start_);
 
-    /* set trap vector base with vector mode */
-
+    /* set trap vector base */
     lui t0, %hi(trap_base);
     addi t0, t0, %lo(trap_base);
 
@@ -75,10 +76,16 @@ Lalign4 __boot_:
 
     csrw mtvec, t0;
 
-    /* disable all interrupts */
+    /* Set interrupt stack address in mscratch */
+    la t0, __interrupt_stack_start_
+    csrw mscratch, t0
 
-    # csrw mstatus, zero;
-    csrw mie, zero;
+/* TODO
+
+1. PMP Configuration
+2. MEPC with user entry point
+
+*/
 
     j app_entry; /* Should this be a jump or call? - entry point for app */
 

@@ -48,8 +48,10 @@ SECTIONS
 
   . = ALIGN(4);
 
-  PROVIDE(__stack_start_ = .);
-  PROVIDE(__stack_end_ = _stack_start_ + 1024);
+  PROVIDE(__stack_end_ = .);
+  PROVIDE(__stack_start_ = __stack_end_ + 1024);
+  PROVIDE(__interrupt_stack_end_ =  __stack_start_ +32); /* 32 bytes guard */
+  PROVIDE(__interrupt_stack_start_ =  __stack_start_ + 31 * 4); /* store 31 (each 4 bytes) registers */
   PROVIDE(__memory_end_ = 0x80003FFF);
 }
 

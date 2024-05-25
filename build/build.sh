@@ -3,7 +3,7 @@
 
 #/****************************************************************************
 # *
-# *   Copyright (C) 2023 bsvtgc@gmail.com. All rights reserved.
+# *   Copyright (C) 2024 bsvtgc@gmail.com. All rights reserved.
 # *   Author: Vincent <bsvtgc@gmail.com>
 # *
 # ****************************************************************************/
@@ -70,7 +70,7 @@ build_executable ()
     APP_DIR=../apps/${APP}
     APP_FILES=$(ls ${APP_DIR})
 
-# Executable 
+# Executable ELF
     EXECUTABLE=FINAL_LOAD.elf
 
     for file in ${BOARD_FILES[@]}; do
@@ -86,6 +86,11 @@ build_executable ()
     OBJ_FILES=$( ls *.o )
     #printf "Object files $OBJ_FILES\n"
     $GNU_LD -T../tools/$GNU_LD_SCRIPT  $GNU_LD_FLAGS $OBJ_FILES -o $EXECUTABLE
+
+# RAW binary
+
+    GNU_OBJCPY=riscv64-unknown-elf-objcopy
+    $GNU_OBJCPY -O binary $EXECUTABLE FINAL_LOAD.bin
 
     printf "Build successful \n\n"
 }
