@@ -10,6 +10,7 @@ ENTRY(__boot_)
 MEMORY
 {
     ON_CHIP_DTIM(wxa): ORIGIN = 0x80000000, LENGTH = 0x4000 /* E31 DTIM 16KiB */
+    /* rom   : ORIGIN = 0x20000000, LENGTH = 0x20000000 */ /* 512MB off-chip, max */
     OFF_CHIP_FLASH (wxa): ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 16MiB */
 }
 
