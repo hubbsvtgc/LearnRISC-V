@@ -23,6 +23,7 @@ fi
 if [[ "cleanse" == "$1" ]]; then
     rm *.elf
     rm *.o
+    rm *.bin
     exit 1
 fi
 
@@ -71,7 +72,7 @@ build_executable ()
     APP_FILES=$(ls ${APP_DIR})
 
 # Executable ELF
-    EXECUTABLE=FINAL_LOAD.elf
+    EXECUTABLE=${APP}.elf
 
     for file in ${BOARD_FILES[@]}; do
         file_trimmed=$( echo "$file" | cut -f 1 -d '.')
@@ -90,7 +91,7 @@ build_executable ()
 # RAW binary
 
     GNU_OBJCPY=riscv64-unknown-elf-objcopy
-    $GNU_OBJCPY -O binary $EXECUTABLE FINAL_LOAD.bin
+    $GNU_OBJCPY -O binary $EXECUTABLE ${APP}.bin
 
     printf "Build successful \n\n"
 }
