@@ -10,6 +10,7 @@ ENTRY(__boot_)
 MEMORY
 {
     ON_CHIP_DTIM(wxa): ORIGIN = 0x80000000, LENGTH = 0x4000 /* E31 DTIM 16KiB */
+    /* rom   : ORIGIN = 0x20000000, LENGTH = 0x20000000 */ /* 512MB off-chip, max */
     OFF_CHIP_FLASH (wxa): ORIGIN = 0x20000000, LENGTH = 0x1000000     /* 16MiB */
 }
 
@@ -50,8 +51,8 @@ SECTIONS
 
   PROVIDE(__stack_end_ = .);
   PROVIDE(__stack_start_ = __stack_end_ + 1024);
-  PROVIDE(__interrupt_stack_end_ =  __stack_start_ +32); /* 32 bytes guard */
-  PROVIDE(__interrupt_stack_start_ =  __stack_start_ + 31 * 4); /* store 31 (each 4 bytes) registers */
+  PROVIDE(__trap_frame_end_ =  __stack_start_ +32); /* 32 bytes guard */
+  PROVIDE(__trap_frame_start_ =  __trap_frame_end_ + 31 * 4); /* store 31 (each 4 bytes) registers */
   PROVIDE(__memory_end_ = 0x80003FFF);
 }
 

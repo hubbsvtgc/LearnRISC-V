@@ -77,7 +77,7 @@ Lalign4 __boot_:
     csrw mtvec, t0;
 
     /* Set interrupt stack address in mscratch */
-    la t0, __interrupt_stack_start_
+    la t0, __trap_frame_start_
     csrw mscratch, t0
 
 /* TODO
